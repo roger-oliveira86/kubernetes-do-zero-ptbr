@@ -48,10 +48,9 @@ Veja o plano completo em [ROADMAP.md](./ROADMAP.md).
 
 Contribuições são bem-vindas. Leia [CONTRIBUTING.md](./CONTRIBUTING.md) antes de abrir uma issue ou pull request.
 
-## Licenças
+## Licença
 
-- Documentação: [CC BY 4.0](./LICENSE-DOCS)
-- Código, scripts e manifestos: [Apache License 2.0](./LICENSE-CODE)
+Este projeto é disponibilizado sob a [Apache License 2.0](./LICENSE).
 
 ## Autor
 
