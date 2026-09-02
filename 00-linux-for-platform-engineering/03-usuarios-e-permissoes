@@ -1,0 +1,238 @@
+# Linux do Zero #4 — Usuários, grupos e permissões
+
+> Parte da trilha **Linux do Zero**, base para quem vai trabalhar com plataforma, SRE e Kubernetes.
+> Anteriores: [#1 Distros e terminal](../01-distros-e-terminal) · [#2 Processos](../02-processos) · [#3 Redes e troubleshooting](../04-redes-e-troubleshooting)
+
+## Por que esta peça existe
+
+`Permission denied` é o erro mais comum e mais mal resolvido da operação. A "solução" habitual — `chmod 777` ou rodar como root — não resolve nada: só desliga a checagem. Este material explica o modelo por baixo, para que a correção seja cirúrgica.
+
+## Conteúdo
+
+- [1. UID e GID: o Linux só conhece números](#1-uid-e-gid)
+- [2. Os três dígitos explicados](#2-os-três-dígitos)
+- [3. chmod, chown e o `X` maiúsculo](#3-chmod-e-chown)
+- [4. setuid, setgid e sticky bit](#4-bits-especiais)
+- [5. umask](#5-umask)# Linux do Zero #4 — Usuários, grupos e permissões
+
+> Parte da trilha **Linux do Zero**, base para quem vai trabalhar com plataforma, SRE e Kubernetes.
+> Anteriores: [#1 Distros e terminal](../01-distros-e-terminal) · [#2 Processos](../02-processos) · [#3 Redes e troubleshooting](../04-redes-e-troubleshooting)
+
+## Por que esta peça existe
+
+`Permission denied` é o erro mais comum e mais mal resolvido da operação. A "solução" habitual — `chmod 777` ou rodar como root — não resolve nada: só desliga a checagem. Este material explica o modelo por baixo, para que a correção seja cirúrgica.
+
+## Conteúdo
+
+- [1. UID e GID: o Linux só conhece números](#1-uid-e-gid)
+- [2. Os três dígitos explicados](#2-os-três-dígitos)
+- [3. chmod, chown e o `X` maiúsculo](#3-chmod-e-chown)
+- [4. setuid, setgid e sticky bit](#4-bits-especiais)
+- [5. umask](#5-umask)
+- [6. Aplicação em Kubernetes](#6-kubernetes)
+- [7. Roteiro de investigação](#7-investigação)
+- [8. Exercício](#8-exercício)
+
+---
+
+## 1. UID e GID
+
+O kernel não conhece nomes de usuário. Conhece números.
+
+```bash
+id
+# uid=1000(roger) gid=1000(roger) groups=1000(roger),27(sudo),999(docker)
+```
+
+Onde ficam os mapeamentos:
+
+| Arquivo | Guarda |
+|---|---|
+| `/etc/passwd` | usuário, UID, GID primário, home, shell |
+| `/etc/group` | grupos e seus membros |
+| `/etc/shadow` | hashes de senha (só root lê) |
+
+Formato de `/etc/passwd`:
+
+roger:x:1000:1000:Roger Oliveira:/home/roger:/bin/bash nome:senha:UID:GID:comentário:home:shell
+
+
+**Implicação para containers:** o container tem seu próprio `/etc/passwd`, mas compartilha o kernel — e portanto os UIDs — com o host. Permissão em volume é resolvida por número, não por nome.
+
+## 2. Os três dígitos
+
+Três classes (`user`, `group`, `others`) × três permissões:
+
+| Letra | Valor | Arquivo | Diretório |
+|---|---|---|---|
+| `r` | 4 | ler conteúdo | listar nomes |
+| `w` | 2 | alterar conteúdo | criar/remover/renomear |
+| `x` | 1 | executar | **atravessar** |
+
+-rw-r--r-- → 6 4 4 → 644 │ │ │ └── others: r-- │ │ └───── group: r-- │ └──────── user: rw- └────────── tipo (- arquivo, d diretório, l link)
+
+
+Padrões comuns:
+
+| Octal | Uso |
+|---|---|
+| `644` | arquivo de configuração |
+| `600` | chave privada, segredo |
+| `755` | binário, diretório |
+| `700` | diretório privado |
+| `1777` | `/tmp` (777 + sticky bit) |
+
+### `x` em diretório é travessia, não execução
+
+A permissão precisa valer no caminho inteiro. Diagnóstico em um comando:
+
+```bash
+namei -l /dados/app/config.yml
+```
+
+Ele imprime cada nível do caminho com dono, grupo e permissão — e mostra exatamente onde a travessia é negada.
+
+## 3. chmod e chown
+
+```bash
+chmod 640 segredo.env            # octal
+chmod u+x deploy.sh              # simbólico
+chmod g-w app.conf
+chmod o= segredo.env             # zera "others"
+
+chown app:platform config.yml
+chown -R app:platform /opt/app
+chgrp platform config.yml
+```
+
+**Recursividade sem estrago** — `X` maiúsculo aplica execução só em diretórios:
+
+```bash
+chmod -R u=rwX,go=rX /opt/app
+```
+
+`chmod -R 755` marcaria todo arquivo de dados como executável. Evite.
+
+## 4. Bits especiais
+
+| Bit | Octal | Aparece como | Efeito |
+|---|---|---|---|
+| setuid | 4000 | `-rwsr-xr-x` | executa com privilégio do **dono do arquivo** |
+| setgid | 2000 | `drwxr-sr-x` | arquivos criados herdam o **grupo do diretório** |
+| sticky | 1000 | `drwxrwxrwt` | só o dono do arquivo pode apagá-lo |
+
+Diretório compartilhado feito do jeito certo:
+
+```bash
+chgrp platform /srv/compartilhado
+chmod 2775 /srv/compartilhado
+```
+
+Auditoria de setuid (primeira parada em máquina suspeita):
+
+```bash
+find / -perm -4000 -type f 2>/dev/null
+```
+
+## 5. umask
+
+Máscara que **remove** bits do padrão de criação.
+
+```bash
+umask        # 0022
+```
+
+| umask | Arquivo (666−) | Diretório (777−) |
+|---|---|---|
+| `022` | 644 | 755 |
+| `027` | 640 | 750 |
+| `077` | 600 | 700 |
+
+Se um arquivo gerado por pipeline nasce com permissão errada, quase sempre a causa é o `umask` do processo que o criou.
+
+## 6. Kubernetes
+
+```yaml
+securityContext:
+  runAsUser: 1000
+  runAsGroup: 3000
+  fsGroup: 2000
+  runAsNonRoot: true
+  readOnlyRootFilesystem: true
+```
+
+| Campo | O que faz de verdade |
+|---|---|
+| `runAsUser` | define o UID do processo — não precisa existir no `/etc/passwd` da imagem |
+| `runAsGroup` | define o GID primário |
+| `fsGroup` | aplica o GID aos volumes e liga **setgid** no diretório (seção 4) |
+| `runAsNonRoot` | kubelet recusa subir se a imagem rodar como UID 0 |
+
+**Armadilhas:**
+
+- `whoami: cannot find name for user ID 1000` não é erro — é só a ausência de tradução número→nome na imagem.
+- **`fsGroup` não funciona em NFS.** O NFS resolve permissão no servidor; a correção é no export, não no `securityContext`.
+
+## 7. Investigação
+
+```bash
+id                          # quem eu sou (UID/GID)
+ls -ln arquivo              # dono do arquivo em NÚMERO
+namei -l /caminho/completo  # travessia do caminho inteiro
+stat arquivo                # permissão detalhada + bits especiais
+getfacl arquivo             # ACL sobrepondo o modelo tradicional?
+```
+
+Se tudo acima estiver correto e ainda negar, olhe a camada acima:
+
+```bash
+getenforce
+ausearch -m avc -ts recent
+```
+
+## 8. Exercício
+
+```bash
+mkdir -p /tmp/lab && cd /tmp/lab
+touch publico.txt privado.txt
+chmod 644 publico.txt
+chmod 600 privado.txt
+mkdir compartilhado && chmod 2775 compartilhado
+ls -ln
+stat compartilhado | head -5
+umask
+```
+
+Responda sem consultar:
+
+1. Por que `privado.txt` não é legível por alguém do mesmo grupo?
+2. O que o `2` em `2775` muda no diretório?
+3. Com `umask 0022`, com que permissão nasce um diretório?
+
+---
+
+**Próxima peça:** discos, sistemas de arquivos e montagem.
+- [6. Aplicação em Kubernetes](#6-kubernetes)
+- [7. Roteiro de investigação](#7-investigação)
+- [8. Exercício](#8-exercício)
+
+---
+
+## 1. UID e GID
+
+O kernel não conhece nomes de usuário. Conhece números.
+
+```bash
+id
+# uid=1000(roger) gid=1000(roger) groups=1000(roger),27(sudo),999(docker)
+```
+
+Onde ficam os mapeamentos:
+
+| Arquivo | Guarda |
+|---|---|
+| `/etc/passwd` | usuário, UID, GID primário, home, shell |
+| `/etc/group` | grupos e seus membros |
+| `/etc/shadow` | hashes de senha (só root lê) |
+
+Formato de `/etc/passwd`:
