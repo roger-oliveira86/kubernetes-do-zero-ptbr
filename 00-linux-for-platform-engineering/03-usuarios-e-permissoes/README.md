@@ -13,21 +13,6 @@
 - [2. Os três dígitos explicados](#2-os-três-dígitos)
 - [3. chmod, chown e o `X` maiúsculo](#3-chmod-e-chown)
 - [4. setuid, setgid e sticky bit](#4-bits-especiais)
-- [5. umask](#5-umask)# Linux do Zero #4 — Usuários, grupos e permissões
-
-> Parte da trilha **Linux do Zero**, base para quem vai trabalhar com plataforma, SRE e Kubernetes.
-> Anteriores: [#1 Distros e terminal](../01-distros-e-terminal) · [#2 Processos](../02-processos) · [#3 Redes e troubleshooting](../04-redes-e-troubleshooting)
-
-## Por que esta peça existe
-
-`Permission denied` é o erro mais comum e mais mal resolvido da operação. A "solução" habitual — `chmod 777` ou rodar como root — não resolve nada: só desliga a checagem. Este material explica o modelo por baixo, para que a correção seja cirúrgica.
-
-## Conteúdo
-
-- [1. UID e GID: o Linux só conhece números](#1-uid-e-gid)
-- [2. Os três dígitos explicados](#2-os-três-dígitos)
-- [3. chmod, chown e o `X` maiúsculo](#3-chmod-e-chown)
-- [4. setuid, setgid e sticky bit](#4-bits-especiais)
 - [5. umask](#5-umask)
 - [6. Aplicação em Kubernetes](#6-kubernetes)
 - [7. Roteiro de investigação](#7-investigação)
@@ -54,8 +39,10 @@ Onde ficam os mapeamentos:
 
 Formato de `/etc/passwd`:
 
-roger:x:1000:1000:Roger Oliveira:/home/roger:/bin/bash nome:senha:UID:GID:comentário:home:shell
-
+```
+roger:x:1000:1000:Roger Oliveira:/home/roger:/bin/bash
+nome:senha:UID:GID:comentário:home:shell
+```
 
 **Implicação para containers:** o container tem seu próprio `/etc/passwd`, mas compartilha o kernel — e portanto os UIDs — com o host. Permissão em volume é resolvida por número, não por nome.
 
@@ -69,8 +56,13 @@ Três classes (`user`, `group`, `others`) × três permissões:
 | `w` | 2 | alterar conteúdo | criar/remover/renomear |
 | `x` | 1 | executar | **atravessar** |
 
--rw-r--r-- → 6 4 4 → 644 │ │ │ └── others: r-- │ │ └───── group: r-- │ └──────── user: rw- └────────── tipo (- arquivo, d diretório, l link)
-
+```
+-rw-r--r--  →  6 4 4  →  644
+ │ │  │  └── others: r--
+ │ │  └───── group:  r--
+ │ └──────── user:   rw-
+ └────────── tipo (- arquivo, d diretório, l link)
+```
 
 Padrões comuns:
 
@@ -212,27 +204,3 @@ Responda sem consultar:
 ---
 
 **Próxima peça:** discos, sistemas de arquivos e montagem.
-- [6. Aplicação em Kubernetes](#6-kubernetes)
-- [7. Roteiro de investigação](#7-investigação)
-- [8. Exercício](#8-exercício)
-
----
-
-## 1. UID e GID
-
-O kernel não conhece nomes de usuário. Conhece números.
-
-```bash
-id
-# uid=1000(roger) gid=1000(roger) groups=1000(roger),27(sudo),999(docker)
-```
-
-Onde ficam os mapeamentos:
-
-| Arquivo | Guarda |
-|---|---|
-| `/etc/passwd` | usuário, UID, GID primário, home, shell |
-| `/etc/group` | grupos e seus membros |
-| `/etc/shadow` | hashes de senha (só root lê) |
-
-Formato de `/etc/passwd`:
