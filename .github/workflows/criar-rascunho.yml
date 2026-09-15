@@ -107,7 +107,7 @@ jobs:
 
           **Tema:** $TEMA
 
-          Este PR foi criado manualmente pelo workflow.
+          Este PR foi criado pelo workflow. Não faça merge enquanto o arquivo ainda estiver em `artigos/rascunhos/`; antes, promova o conteúdo aprovado para `artigos/ensaios/` conforme o índice editorial.
 
           - [ ] Revisão técnica
           - [ ] Sanitização de exemplos
