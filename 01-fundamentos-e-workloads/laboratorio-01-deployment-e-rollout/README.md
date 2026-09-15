@@ -28,6 +28,25 @@ kubectl config current-context
 kubectl cluster-info
 ```
 
+## Onde executar
+
+Escolha somente um ambiente descartável. Este laboratório **não** deve ser executado em cluster de trabalho ou produção.
+
+| Opção | Quando usar | Início e limpeza |
+| --- | --- | --- |
+| [Killercoda Kubernetes Playground](https://killercoda.com/playgrounds/scenario/kubernetes) | Melhor opção para começar: funciona no navegador e não exige instalação local. | Abra o playground, execute os comandos deste guia e encerre a sessão ao final. |
+| [kind](https://kind.sigs.k8s.io/) | Para repetir o cenário localmente com Docker, Podman ou nerdctl. | `kind create cluster --name kubernetes-do-zero` e, ao final, `kind delete cluster --name kubernetes-do-zero`. |
+| [minikube](https://minikube.sigs.k8s.io/docs/start/) | Para quem já usa um cluster local guiado. | `minikube start` e, ao final, `minikube delete`. |
+
+Antes de aplicar arquivos, registre a versão e o contexto usados. Isso permite comparar resultados sem transformar um comando em receita cega:
+
+```bash
+kubectl version
+kubectl config current-context
+```
+
+Se o contexto ou a versão não forem os esperados, pare. O primeiro passo de uma boa operação é validar onde a mudança acontecerá.
+
 ## Arquivos
 
 | Arquivo | Responsabilidade |
