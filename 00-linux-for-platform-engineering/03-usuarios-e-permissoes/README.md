@@ -157,13 +157,13 @@ securityContext:
 |---|---|
 | `runAsUser` | define o UID do processo — não precisa existir no `/etc/passwd` da imagem |
 | `runAsGroup` | define o GID primário |
-| `fsGroup` | aplica o GID aos volumes e liga **setgid** no diretório (seção 4) |
+| `fsGroup` | para tipos de volume compatíveis, informa o grupo suplementar do processo e pode orientar o ajuste de grupo/permissões no volume montado |
 | `runAsNonRoot` | kubelet recusa subir se a imagem rodar como UID 0 |
 
 **Armadilhas:**
 
 - `whoami: cannot find name for user ID 1000` não é erro — é só a ausência de tradução número→nome na imagem.
-- **`fsGroup` não funciona em NFS.** O NFS resolve permissão no servidor; a correção é no export, não no `securityContext`.
+- Em NFS e em drivers CSI, `fsGroup` pode não ser suficiente ou o ajuste de ownership pode ser delegado ao driver. Verifique o export, o mapeamento de IDs e a documentação do driver antes de assumir esse comportamento.
 
 ## 7. Investigação
 
