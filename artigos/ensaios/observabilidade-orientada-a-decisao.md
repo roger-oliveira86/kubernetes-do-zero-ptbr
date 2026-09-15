@@ -1,12 +1,12 @@
 ---
 title: "Observabilidade não é dashboard: é suporte à decisão"
-status: rascunho
+status: publicado-no-repositorio
 tema: "Como métricas, logs e traces ajudam a avaliar mudança, impacto e próximo passo seguro"
 ---
 
 # Observabilidade não é dashboard: é suporte à decisão
 
-> Rascunho sanitizado para revisão técnica e editorial. Não contém dados, sistemas ou incidentes identificáveis.
+> Ensaio sanitizado. Não contém dados, sistemas ou incidentes identificáveis.
 
 ## Tese
 

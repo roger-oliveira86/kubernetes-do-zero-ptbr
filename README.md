@@ -15,7 +15,7 @@ Este projeto acompanha minha preparação para a certificação CKA e transforma
 
 | Módulo | Tema | Status |
 | --- | --- | --- |
-| 00 | Primeiros passos | Em preparação |
+| 00 | Primeiros passos | Em progresso |
 | 01 | Fundamentos e workloads | Planejado |
 | 02 | Arquitetura do cluster | Planejado |
 | 03 | Serviços e networking | Planejado |
@@ -23,6 +23,12 @@ Este projeto acompanha minha preparação para a certificação CKA e transforma
 | 05 | Troubleshooting | Planejado |
 
 Veja o plano completo em [ROADMAP.md](./ROADMAP.md).
+
+## Conteúdos complementares
+
+A trilha prática começa pelos fundamentos Linux em [Linux para Platform Engineering](./00-linux-for-platform-engineering/README.md).
+
+Para discussões sobre decisões de plataforma, confiabilidade e observabilidade, consulte os [artigos técnicos](./artigos/README.md). Eles complementam a trilha de estudo e não substituem os laboratórios numerados.
 
 ## Como estudar
 
@@ -48,10 +54,9 @@ Veja o plano completo em [ROADMAP.md](./ROADMAP.md).
 
 Contribuições são bem-vindas. Leia [CONTRIBUTING.md](./CONTRIBUTING.md) antes de abrir uma issue ou pull request.
 
-## Licenças
+## Licença
 
-- Documentação: [CC BY 4.0](./LICENSE-DOCS)
-- Código, scripts e manifestos: [Apache License 2.0](./LICENSE-CODE)
+Este repositório é disponibilizado sob a [Apache License 2.0](./LICENSE).
 
 ## Autor
 

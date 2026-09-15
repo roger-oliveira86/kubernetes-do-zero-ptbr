@@ -27,7 +27,7 @@ Entender o que um processo realmente é no Linux: identidade (PID), hierarquia (
 |---|---|---|
 | `PID` | Identificador único do processo | Base para qualquer ação de diagnóstico ou kill |
 | `PPID` | PID do processo pai | Explica reparentamento e por que "matar o pai" derruba os filhos |
-| `STAT` | Estado atual (`R`, `S`, `D`, `Z`, ...) | `D` prolongado costuma indicar gargalo de I/O/disco, não bug de app |
+| `STAT` | Estado atual (`R`, `S`, `D`, `Z`, ...) | `D` prolongado aponta para espera não interrompível, frequentemente ligada a I/O ou armazenamento; investigue o recurso aguardado antes de concluir a causa |
 | `ETIME` | Tempo de vida do processo | Ajuda a distinguir processo recém-criado de processo travado há horas |
 
 ## Exercícios
