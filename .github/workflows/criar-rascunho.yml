@@ -1,0 +1,115 @@
+name: Criar rascunho editorial
+
+on:
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: "Identificador do arquivo (ex.: observabilidade-orientada-a-decisao)"
+        required: true
+        type: string
+      titulo:
+        description: "Título do rascunho"
+        required: true
+        type: string
+      tema:
+        description: "Tema ou pergunta central"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  criar-rascunho:
+    name: Criar rascunho e Pull Request
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+      - name: Validar entradas
+        env:
+          SLUG: ${{ inputs.slug }}
+          TITULO: ${{ inputs.titulo }}
+          TEMA: ${{ inputs.tema }}
+        run: |
+          if ! [[ "$SLUG" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+            echo "O slug deve conter apenas letras minúsculas, números e hífens."
+            exit 1
+          fi
+
+          if [[ -z "$TITULO" || -z "$TEMA" ]]; then
+            echo "Título e tema são obrigatórios."
+            exit 1
+          fi
+
+      - name: Criar branch e arquivo Markdown
+        env:
+          SLUG: ${{ inputs.slug }}
+          TITULO: ${{ inputs.titulo }}
+          TEMA: ${{ inputs.tema }}
+          DATA: ${{ github.run_id }}
+        run: |
+          BRANCH="rascunho/${SLUG}-${DATA}"
+          ARQUIVO="artigos/rascunhos/${SLUG}.md"
+
+          git checkout -b "$BRANCH"
+
+          if [[ -e "$ARQUIVO" ]]; then
+            echo "Já existe um rascunho com este slug: $ARQUIVO"
+            exit 1
+          fi
+
+          mkdir -p artigos/rascunhos
+
+          {
+            printf '%s\n' "---"
+            printf 'title: "%s"\n' "$TITULO"
+            printf '%s\n' "status: rascunho"
+            printf 'tema: "%s"\n' "$TEMA"
+            printf '%s\n\n' "---"
+            printf '# %s\n\n' "$TITULO"
+            printf '%s\n\n' "> Rascunho criado por workflow. Revisar tecnicamente, sanitizar exemplos e validar antes de publicar."
+            printf '%s\n\n' "## Tese"
+            printf '%s\n\n' "Qual é a ideia principal que este texto defende?"
+            printf '%s\n\n' "## Contexto"
+            printf '%s\n\n' "Qual problema de plataforma, confiabilidade ou operação torna essa discussão relevante?"
+            printf '%s\n\n' "## Decisão ou trade-off"
+            printf '%s\n\n' "Que decisão precisa ser tomada? Quais riscos, alternativas e sinais sustentam essa escolha?"
+            printf '%s\n\n' "## Evidência"
+            printf '%s\n\n' "Inclua somente fatos verificáveis e exemplos sanitizados."
+            printf '%s\n\n' "## Próximo passo seguro"
+            printf '%s\n\n' "Qual ação prática o leitor pode tomar sem ampliar risco desnecessariamente?"
+          } > "$ARQUIVO"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$ARQUIVO"
+          git commit -m "docs: cria rascunho ${SLUG}"
+          git push origin "HEAD:$BRANCH"
+
+          echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
+          echo "ARQUIVO=$ARQUIVO" >> "$GITHUB_ENV"
+
+      - name: Abrir Pull Request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITULO: ${{ inputs.titulo }}
+          TEMA: ${{ inputs.tema }}
+        run: |
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "docs: rascunho — $TITULO" \
+            --body "## Rascunho editorial
+
+          **Tema:** $TEMA
+
+          Este PR foi criado manualmente pelo workflow.
+
+          - [ ] Revisão técnica
+          - [ ] Sanitização de exemplos
+          - [ ] Revisão editorial
+          - [ ] Decisão explícita de publicação"
