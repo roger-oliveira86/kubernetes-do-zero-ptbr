@@ -16,7 +16,7 @@ Este projeto acompanha minha preparação para a certificação CKA e transforma
 | Módulo | Tema | Status |
 | --- | --- | --- |
 | 00 | Primeiros passos | Em progresso |
-| 01 | Fundamentos e workloads | Planejado |
+| 01 | Fundamentos e workloads | Em progresso |
 | 02 | Arquitetura do cluster | Planejado |
 | 03 | Serviços e networking | Planejado |
 | 04 | Storage | Planejado |
