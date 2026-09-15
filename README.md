@@ -54,10 +54,9 @@ Para discussões sobre decisões de plataforma, confiabilidade e observabilidade
 
 Contribuições são bem-vindas. Leia [CONTRIBUTING.md](./CONTRIBUTING.md) antes de abrir uma issue ou pull request.
 
-## Licenças
+## Licença
 
-- Documentação: [CC BY 4.0](./LICENSE-DOCS)
-- Código, scripts e manifestos: [Apache License 2.0](./LICENSE-CODE)
+Este repositório é disponibilizado sob a [Apache License 2.0](./LICENSE).
 
 ## Autor
 
