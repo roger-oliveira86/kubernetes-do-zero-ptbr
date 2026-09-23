@@ -33,6 +33,7 @@ Por isso a trilha começa pelo sistema operacional e só depois sobe para o orqu
 | --- | --- |
 | [Platform Engineering começa antes do Kubernetes](./ENSAIOS.md) | Quem é o cliente da plataforma, como ela falha e como se mede se ela ajuda |
 | [Observabilidade não é dashboard: é suporte à decisão](./artigos/ensaios/observabilidade-orientada-a-decisao.md) | Métricas, logs e traces como apoio para decidir o próximo passo seguro de uma mudança |
+| [Migração em ondas com critérios de avanço e rollback](./artigos/ensaios/migracao-em-ondas-observabilidade-para-decidir-com-seguranca.md) | Quando avançar, pausar ou reverter uma mudança progressiva, e com quais sinais |
 
 Os ensaios usam exemplos sanitizados: nenhum sistema, dado ou incidente real é identificável.
 
