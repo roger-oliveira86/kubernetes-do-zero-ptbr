@@ -1,63 +1,67 @@
-# Kubernetes do Zero - PT-BR
+# Kubernetes do Zero — PT-BR
 
-Um guia gratuito, prático e progressivo para aprender Kubernetes em português.
+**Fundamentos de Linux, Kubernetes e Platform Engineering, escritos por quem opera plataforma em produção.**
 
-Este projeto acompanha minha preparação para a certificação CKA e transforma cada etapa de estudo em explicações, laboratórios e manifestos reproduzíveis. O objetivo não é substituir a documentação oficial nem prometer aprovação na prova, mas oferecer uma porta de entrada clara para a prática.
+> **In English:** A Portuguese-language, hands-on track on Linux fundamentals, Kubernetes and Platform Engineering. The published chapters cover processes, networking, users and permissions — always ending in the Kubernetes behaviour they explain. Essays discuss platform decisions, reliability and observability. English articles: [dev.to/rogeroliveira86](https://dev.to/rogeroliveira86).
 
-## Para quem é
+---
 
-- Pessoas começando em Kubernetes.
-- Profissionais de infraestrutura, DevOps, SRE e cloud.
-- Quem busca laboratórios que possam ser executados no navegador.
-- Quem deseja acompanhar uma jornada prática rumo à CKA.
+## A tese
 
-## Roteiro
+Platform Engineering começa antes do Kubernetes. Pods, namespaces, limits e network policies são reembalagens de conceitos do Linux: processos, namespaces do kernel, cgroups, permissões e rede. Quem entende a camada de baixo investiga falhas por evidência, em vez de decorar comandos.
 
-| Módulo | Tema | Status |
+Por isso a trilha começa pelo sistema operacional e só depois sobe para o orquestrador:
+
+**Linux → processos → redes → containers → Kubernetes → observabilidade → SRE → Platform Engineering**
+
+## O que já está publicado
+
+### Trilha — Linux para Platform Engineering
+
+| # | Capítulo | O que você leva |
 | --- | --- | --- |
-| 00 | Primeiros passos | Em progresso |
-| 01 | Fundamentos e workloads | Planejado |
-| 02 | Arquitetura do cluster | Planejado |
-| 03 | Serviços e networking | Planejado |
-| 04 | Storage | Planejado |
-| 05 | Troubleshooting | Planejado |
+| 01 | [Distribuições e terminal](./00-linux-for-platform-engineering/01-distros-e-terminal/README.md) | Como inspecionar um sistema Linux desconhecido |
+| 02 | [Processos](./00-linux-for-platform-engineering/02-processos/README.md) | PID, PPID, estados e como investigar um processo |
+| 03 | [Redes e troubleshooting](./00-linux-for-platform-engineering/04-redes-e-troubleshooting/README.md) | Rotas, DNS, portas, sockets e as causas reais de um `connection refused` |
+| 04 | [Usuários e permissões](./00-linux-for-platform-engineering/03-usuarios-e-permissoes/README.md) | UID/GID, o `x` em diretório, `umask` e a tradução para `securityContext` |
 
-Veja o plano completo em [ROADMAP.md](./ROADMAP.md).
+Índice completo da trilha: [Linux para Platform Engineering](./00-linux-for-platform-engineering/README.md).
 
-## Conteúdos complementares
+### Ensaios — decisões de plataforma
 
-A trilha prática começa pelos fundamentos Linux em [Linux para Platform Engineering](./00-linux-for-platform-engineering/README.md).
+| Ensaio | Tema |
+| --- | --- |
+| [Platform Engineering começa antes do Kubernetes](./ENSAIOS.md) | Quem é o cliente da plataforma, como ela falha e como se mede se ela ajuda |
+| [Observabilidade não é dashboard: é suporte à decisão](./artigos/ensaios/observabilidade-orientada-a-decisao.md) | Métricas, logs e traces como apoio para decidir o próximo passo seguro de uma mudança |
 
-Para discussões sobre decisões de plataforma, confiabilidade e observabilidade, consulte os [artigos técnicos](./artigos/README.md). Eles complementam a trilha de estudo e não substituem os laboratórios numerados.
+Os ensaios usam exemplos sanitizados: nenhum sistema, dado ou incidente real é identificável.
+
+## Em construção
+
+Os módulos de Kubernetes (workloads, arquitetura do cluster, networking, storage e troubleshooting) estão sendo escritos um de cada vez, sempre com laboratório reproduzível. O plano e a ordem estão no [ROADMAP](./ROADMAP.md); o ponto de partida é [Primeiros passos](./00-primeiros-passos/README.md).
 
 ## Como estudar
 
-1. Leia o README do módulo.
-2. Execute o laboratório indicado.
-3. Compare seu resultado com os objetivos do exercício.
-4. Consulte a documentação oficial para aprofundamento.
-5. Registre dúvidas ou sugestões por meio de issues.
-
-## Versão e escopo
-
-- Conteúdo inicialmente validado durante a preparação para Kubernetes v1.35.
-- A versão efetiva da CKA pode mudar; confirme sempre a página oficial antes do exame.
-- As regras e os recursos permitidos durante a prova devem ser consultados diretamente na Linux Foundation.
+1. Leia o capítulo e execute os comandos numa VM ou ambiente descartável.
+2. Anote o que observou antes de seguir para o próximo.
+3. Compare com a documentação oficial.
+4. Nunca rode comandos de alteração em produção sem entender o efeito e ter uma saída segura.
 
 ## Fontes principais
 
 - [Documentação oficial do Kubernetes](https://kubernetes.io/docs/)
-- [Certificação CKA - Linux Foundation](https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/)
-- [Recursos permitidos em exames Linux Foundation](https://docs.linuxfoundation.org/tc-docs/certification/certification-resources-allowed)
+- [man-pages do Linux](https://man7.org/linux/man-pages/)
 
 ## Contribuições
 
-Contribuições são bem-vindas. Leia [CONTRIBUTING.md](./CONTRIBUTING.md) antes de abrir uma issue ou pull request.
+Sugestões e correções são bem-vindas. Leia o [CONTRIBUTING.md](./CONTRIBUTING.md) antes de abrir uma issue ou pull request.
 
 ## Licença
 
-Este repositório é disponibilizado sob a [Apache License 2.0](./LICENSE).
+[Apache License 2.0](./LICENSE).
 
 ## Autor
 
-Roger Oliveira - Platform Engineering, Kubernetes, SRE e Observabilidade.
+**Roger Oliveira** — Engenharia de Plataforma, SRE, Kubernetes e Observabilidade. Mais de 12 anos em infraestrutura, com liderança técnica de migrações de plataforma em ambiente regulado.
+
+[LinkedIn](https://www.linkedin.com/in/oliveiraroger/) · [DEV.to (English)](https://dev.to/rogeroliveira86)
