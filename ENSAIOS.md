@@ -1,6 +1,6 @@
 # Ensaios
 
-Textos de opinião e reflexão sobre carreira, Platform Engineering e engenharia de infraestrutura — conectados com a trilha técnica deste repositório, mas fora da numeração de módulos (00–05), que segue o roadmap de preparação para a CKA.
+Textos de opinião e reflexão sobre carreira, Platform Engineering e engenharia de infraestrutura — conectados com a trilha técnica deste repositório, mas fora da numeração de módulos (00–05), que segue o roadmap da trilha.
 
 ---
 

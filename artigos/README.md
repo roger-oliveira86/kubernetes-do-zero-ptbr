@@ -9,6 +9,7 @@ O objetivo não é documentar ambientes reais. Cada ensaio usa exemplos sanitiza
 | Ensaio | Tema |
 | --- | --- |
 | [Observabilidade não é dashboard: é suporte à decisão](./ensaios/observabilidade-orientada-a-decisao.md) | Como métricas, logs e traces sustentam decisões sobre mudança, impacto e próximo passo seguro. |
+| [Migração em ondas com critérios de avanço e rollback](./ensaios/migracao-em-ondas-observabilidade-para-decidir-com-seguranca.md) | Critérios para avançar, pausar ou reverter uma mudança progressiva. |
 
 ## Fluxo editorial
 
