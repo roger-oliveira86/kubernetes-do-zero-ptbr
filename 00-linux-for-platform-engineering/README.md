@@ -10,6 +10,7 @@ A ordem conceitual é: **Linux → processos → redes → containers → Kubern
 | [02 — Processos](./02-processos/README.md) | PID, PPID, estados e investigação | Guia + experimento | Publicado |
 | [03 — Redes e troubleshooting](./04-redes-e-troubleshooting/README.md) | Rotas, DNS, portas e sockets | Laboratório guiado | Publicado |
 | [04 — Usuários e permissões](./03-usuarios-e-permissoes/README.md) | UID, GID, permissões, ACLs e `securityContext` | Guia + exercício | Publicado |
+| [05 — Sistema de arquivos e inodes](./05-sistema-de-arquivos-e-inodes/README.md) | Inodes, `df -i`, arquivos deletados abertos e `DiskPressure` | Guia + exercício | Publicado |
 
 ## Ensaios
 

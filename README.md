@@ -24,6 +24,7 @@ Por isso a trilha começa pelo sistema operacional e só depois sobe para o orqu
 | 02 | [Processos](./00-linux-for-platform-engineering/02-processos/README.md) | PID, PPID, estados e como investigar um processo |
 | 03 | [Redes e troubleshooting](./00-linux-for-platform-engineering/04-redes-e-troubleshooting/README.md) | Rotas, DNS, portas, sockets e as causas reais de um `connection refused` |
 | 04 | [Usuários e permissões](./00-linux-for-platform-engineering/03-usuarios-e-permissoes/README.md) | UID/GID, o `x` em diretório, `umask` e a tradução para `securityContext` |
+| 05 | [Sistema de arquivos e inodes](./00-linux-for-platform-engineering/05-sistema-de-arquivos-e-inodes/README.md) | Por que o disco "enche" com espaço livre: inodes, `lsof +L1` e `DiskPressure` |
 
 Índice completo da trilha: [Linux para Platform Engineering](./00-linux-for-platform-engineering/README.md).
 
@@ -34,6 +35,7 @@ Por isso a trilha começa pelo sistema operacional e só depois sobe para o orqu
 | [Platform Engineering começa antes do Kubernetes](./ENSAIOS.md) | Quem é o cliente da plataforma, como ela falha e como se mede se ela ajuda |
 | [Observabilidade não é dashboard: é suporte à decisão](./artigos/ensaios/observabilidade-orientada-a-decisao.md) | Métricas, logs e traces como apoio para decidir o próximo passo seguro de uma mudança |
 | [Migração em ondas com critérios de avanço e rollback](./artigos/ensaios/migracao-em-ondas-observabilidade-para-decidir-com-seguranca.md) | Quando avançar, pausar ou reverter uma mudança progressiva, e com quais sinais |
+| [A ordem das ondas: o que cada etapa precisa ensinar](./artigos/ensaios/ordem-das-ondas-o-que-cada-etapa-precisa-ensinar.md) | Ordenar mudanças arriscadas pelo que cada etapa ensina à próxima, não pela facilidade |
 
 Os ensaios usam exemplos sanitizados: nenhum sistema, dado ou incidente real é identificável.
 

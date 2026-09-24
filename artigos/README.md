@@ -10,6 +10,7 @@ O objetivo não é documentar ambientes reais. Cada ensaio usa exemplos sanitiza
 | --- | --- |
 | [Observabilidade não é dashboard: é suporte à decisão](./ensaios/observabilidade-orientada-a-decisao.md) | Como métricas, logs e traces sustentam decisões sobre mudança, impacto e próximo passo seguro. |
 | [Migração em ondas com critérios de avanço e rollback](./ensaios/migracao-em-ondas-observabilidade-para-decidir-com-seguranca.md) | Critérios para avançar, pausar ou reverter uma mudança progressiva. |
+| [A ordem das ondas: o que cada etapa precisa ensinar](./ensaios/ordem-das-ondas-o-que-cada-etapa-precisa-ensinar.md) | Como ordenar mudanças em ondas pelo aprendizado que cada etapa gera para a próxima. |
 
 ## Fluxo editorial
 
