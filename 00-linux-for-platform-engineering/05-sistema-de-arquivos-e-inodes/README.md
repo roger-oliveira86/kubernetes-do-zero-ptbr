@@ -80,3 +80,7 @@ Um nó pode estar com `DiskPressure=True` e `df -h` "normal" ao mesmo tempo, se 
 3. Em produção, monitore `node_filesystem_files_free` (Prometheus/node_exporter) com o mesmo alerta que já existe para bytes livres.
 
 Os exemplos são educacionais. Confirme comportamento, versão e permissões no ambiente em que forem executados.
+
+---
+
+*Série Linux do Zero — [Roger Oliveira](https://www.linkedin.com/in/oliveiraroger/). Repositório: [kubernetes-do-zero-ptbr](https://github.com/roger-oliveira86/kubernetes-do-zero-ptbr).*
