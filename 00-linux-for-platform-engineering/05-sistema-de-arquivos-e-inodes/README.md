@@ -1,6 +1,7 @@
 # 05 — Sistema de arquivos e inodes
 
 > Parte da trilha **Linux do Zero** (peça #5: *Sistema de arquivos e inodes*).
+> Artigo completo: [DEV.to](https://dev.to/rogeroliveira86/-linux-from-zero-inodes-and-the-filesystem-limit-df-h-doesnt-show-for-platform-engineers-4jml)
 
 ## Objetivo
 
