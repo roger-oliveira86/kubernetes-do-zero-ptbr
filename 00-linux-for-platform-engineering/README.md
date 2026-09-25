@@ -1,25 +1,25 @@
-# Linux para Platform Engineering
+# Linux for Platform Engineering
 
-Esta trilha constrói os fundamentos que reaparecem em containers, Kubernetes, observabilidade e troubleshooting.
+This track builds the fundamentals that reappear in containers, Kubernetes, observability and troubleshooting.
 
-A ordem conceitual é: **Linux → processos → redes → containers → Kubernetes → observabilidade → SRE → Platform Engineering**. Os nomes das pastas preservam a evolução do material; use este índice como ponto de entrada.
+The conceptual order is: **Linux → processes → networking → containers → Kubernetes → observability → SRE → Platform Engineering**. Folder names preserve the material's evolution; use this index as the entry point.
 
-| Peça | Assunto | Formato | Situação |
+| Piece | Subject | Format | Status |
 | --- | --- | --- | --- |
-| [01 — Distribuições e terminal](./01-distros-e-terminal/README.md) | Ambiente Linux e inspeção inicial do sistema | Guia + comandos | Publicado |
-| [02 — Processos](./02-processos/README.md) | PID, PPID, estados e investigação | Guia + experimento | Publicado |
-| [03 — Redes e troubleshooting](./04-redes-e-troubleshooting/README.md) | Rotas, DNS, portas e sockets | Laboratório guiado | Publicado |
-| [04 — Usuários e permissões](./03-usuarios-e-permissoes/README.md) | UID, GID, permissões, ACLs e `securityContext` | Guia + exercício | Publicado |
-| [05 — Sistema de arquivos e inodes](./05-sistema-de-arquivos-e-inodes/README.md) | Inodes, `df -i`, arquivos deletados abertos e `DiskPressure` | Guia + exercício | Publicado |
+| [01 — Distros and terminal](./01-distros-e-terminal/README.md) | Linux environment and initial system inspection | Guide + commands | Published |
+| [02 — Processes](./02-processos/README.md) | PID, PPID, states and investigation | Guide + experiment | Published |
+| [03 — Networking and troubleshooting](./04-redes-e-troubleshooting/README.md) | Routes, DNS, ports and sockets | Guided lab | Published |
+| [04 — Users and permissions](./03-usuarios-e-permissoes/README.md) | UID, GID, permissions, ACLs and `securityContext` | Guide + exercise | Published |
+| [05 — Filesystems and inodes](./05-sistema-de-arquivos-e-inodes/README.md) | Inodes, `df -i`, deleted-but-open files and `DiskPressure` | Guide + exercise | Published |
 
-## Ensaios
+## Essays
 
-[Ensaios — Linux para Platform Engineering](./ENSAIOS.md) reúne análises curtas que conectam esses fundamentos a decisões de plataforma.
+[Essays — Linux for Platform Engineering](./ENSAIOS.md) collects short analyses connecting these fundamentals to platform decisions.
 
-## Como usar
+## How to use it
 
-1. Execute os comandos em uma VM ou ambiente de laboratório descartável.
-2. Registre o que observou antes de passar para a próxima peça.
-3. Não reproduza comandos de alteração em sistemas produtivos sem entender o efeito e possuir uma saída segura.
+1. Run the commands in a VM or a disposable lab environment.
+2. Write down what you observed before moving to the next piece.
+3. Don't reproduce mutating commands on production systems without understanding the effect and having a safe way out.
 
-Os exemplos são educacionais. Confirme comportamento, versão e permissões no ambiente em que forem executados.
+The examples are educational. Confirm behavior, version and permissions in the environment where they'll run.
