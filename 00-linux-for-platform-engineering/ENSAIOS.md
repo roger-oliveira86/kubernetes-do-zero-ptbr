@@ -1,7 +1,7 @@
-# Ensaios — Linux para Platform Engineering
+# Essays — Linux for Platform Engineering
 
-Este espaço reúne análises curtas sobre decisões operacionais, troubleshooting e fundamentos Linux aplicados a plataformas.
+This space collects short analyses on operational decisions, troubleshooting and Linux fundamentals applied to platforms.
 
-## Em construção
+## In progress
 
-Os primeiros ensaios serão adicionados após validação técnica e sanitização dos exemplos.
+The first essays will be added after technical validation and sanitization of the examples.
