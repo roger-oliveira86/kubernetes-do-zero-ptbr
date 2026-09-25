@@ -26,11 +26,11 @@ The conceptual order is: **Linux → processes → networking → containers →
 
 | Piece | Subject | Format | Status |
 | --- | --- | --- | --- |
-| [01 — Distros and terminal](./01-distros-e-terminal/README.md) | Linux environment and initial system inspection | Guide + commands | Published |
-| [02 — Processes](./02-processos/README.md) | PID, PPID, states and investigation | Guide + experiment | Published |
-| [03 — Networking and troubleshooting](./04-redes-e-troubleshooting/README.md) | Routes, DNS, ports and sockets | Guided lab | Published |
-| [04 — Users and permissions](./03-usuarios-e-permissoes/README.md) | UID, GID, permissions, ACLs and `securityContext` | Guide + exercise | Published |
-| [05 — Filesystems and inodes](./05-sistema-de-arquivos-e-inodes/README.md) | Inodes, `df -i`, deleted-but-open files and `DiskPressure` | Guide + exercise | Published |
+| [01 — Distros and terminal](./01-distros-and-terminal/README.md) | Linux environment and initial system inspection | Guide + commands | Published |
+| [02 — Processes](./02-processes/README.md) | PID, PPID, states and investigation | Guide + experiment | Published |
+| [03 — Networking and troubleshooting](./04-networking-and-troubleshooting/README.md) | Routes, DNS, ports and sockets | Guided lab | Published |
+| [04 — Users and permissions](./03-users-and-permissions/README.md) | UID, GID, permissions, ACLs and `securityContext` | Guide + exercise | Published |
+| [05 — Filesystems and inodes](./05-filesystems-and-inodes/README.md) | Inodes, `df -i`, deleted-but-open files and `DiskPressure` | Guide + exercise | Published |
 
 ## Essays
 

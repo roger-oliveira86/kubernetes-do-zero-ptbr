@@ -12,7 +12,7 @@ Prerequisite: basic terminal and permissions (pieces #1 and #2 of this track).
 ## Structure of this lab
 
 ```text
-04-redes-e-troubleshooting/
+04-networking-and-troubleshooting/
 ├── README.md                  # this file
 ├── 01-interfaces-e-rotas.md   # ip a, ip route
 ├── 02-dns.md                  # dig, resolvectl, /etc/resolv.conf

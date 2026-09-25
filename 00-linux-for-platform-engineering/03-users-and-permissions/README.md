@@ -1,7 +1,7 @@
 # Linux From Scratch #4 — Users, groups and permissions
 
 > Part of the **Linux From Scratch** track, foundational for anyone working with platform, SRE and Kubernetes.
-> Previous: [#1 Distros and terminal](../01-distros-e-terminal) · [#2 Processes](../02-processos) · [#3 Networking and troubleshooting](../04-redes-e-troubleshooting)
+> Previous: [#1 Distros and terminal](../01-distros-and-terminal) · [#2 Processes](../02-processes) · [#3 Networking and troubleshooting](../04-networking-and-troubleshooting)
 
 ## Why this piece exists
 

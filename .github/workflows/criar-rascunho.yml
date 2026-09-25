@@ -53,7 +53,7 @@ jobs:
           DATA: ${{ github.run_id }}
         run: |
           BRANCH="rascunho/${SLUG}-${DATA}"
-          ARQUIVO="artigos/rascunhos/${SLUG}.md"
+          ARQUIVO="articles/drafts/${SLUG}.md"
 
           git checkout -b "$BRANCH"
 
@@ -62,7 +62,7 @@ jobs:
             exit 1
           fi
 
-          mkdir -p artigos/rascunhos
+          mkdir -p articles/drafts
 
           {
             printf '%s\n' "---"
@@ -107,7 +107,7 @@ jobs:
 
           **Topic:** $TEMA
 
-          This PR was created by the workflow. Don't merge while the file is still in \`artigos/rascunhos/\`; first, promote the approved content to \`artigos/ensaios/\` per the editorial index.
+          This PR was created by the workflow. Don't merge while the file is still in \`articles/drafts/\`; first, promote the approved content to \`articles/essays/\` per the editorial index.
 
           - [ ] Technical review
           - [ ] Example sanitization
