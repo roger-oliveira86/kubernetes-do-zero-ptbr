@@ -1,26 +1,26 @@
-# Módulo 01 — Distribuições Linux e Terminal
+# Module 01 — Linux Distros and Terminal
 
-Este módulo apresenta Linux para quem está começando em infraestrutura, DevOps, SRE e Kubernetes.
+This module introduces Linux to anyone starting out in infrastructure, DevOps, SRE and Kubernetes.
 
-## Objetivos
+## Objectives
 
-- Entender o que é Linux e o que é uma distribuição.
-- Escolher uma distribuição adequada para começar.
-- Criar uma máquina virtual Ubuntu.
-- Usar os primeiros comandos do terminal.
-- Observar o estado do sistema antes de fazer alterações.
+- Understand what Linux is and what a distribution is.
+- Choose a suitable distribution to get started.
+- Create an Ubuntu virtual machine.
+- Use the first terminal commands.
+- Observe the system's state before making changes.
 
-## Distribuição recomendada
+## Recommended distribution
 
-Comece com Ubuntu LTS em uma máquina virtual.
+Start with Ubuntu LTS in a virtual machine.
 
-Depois avance para:
+Then move on to:
 
 - Debian Stable;
 - Fedora/Rocky Linux;
-- Alpine Linux em containers.
+- Alpine Linux in containers.
 
-## Primeiro laboratório
+## First lab
 
 ```bash
 pwd
@@ -32,8 +32,8 @@ df -h
 free -h
 ```
 
-Antes de alterar qualquer configuração, responda: em qual diretório estou, qual usuário executará o comando e qual é o estado atual do sistema? Esse hábito reduz mudanças por tentativa e erro.
+Before changing any configuration, answer: which directory am I in, which user will run the command, and what is the system's current state? This habit cuts down on trial-and-error changes.
 
-## Próximo passo
+## Next step
 
-Siga para [Processos](../02-processos/README.md) e observe como programas aparecem, vivem e terminam no Linux.
+Move on to [Processes](../02-processos/README.md) and observe how programs appear, live and end on Linux.
