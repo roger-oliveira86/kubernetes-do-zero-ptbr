@@ -1,26 +1,26 @@
-# 04 — Redes e Troubleshooting
+# 04 — Networking and Troubleshooting
 
-> Parte da trilha **Linux do Zero** (peça #3: *Redes, DNS, portas e sockets*).
-> Artigos completos: [Medium](https://medium.com/@rogeroliveira86/linux-do-zero-515b4c682a91) · [DEV.to](https://dev.to/rogeroliveira86/linux-from-zero-networking-dns-ports-and-sockets-for-platform-engineers-240h)
+> Part of the **Linux From Scratch** track (piece #3: *Networking, DNS, ports and sockets*).
+> Full articles: [Medium](https://medium.com/@rogeroliveira86/linux-do-zero-515b4c682a91) · [DEV.to](https://dev.to/rogeroliveira86/linux-from-zero-networking-dns-ports-and-sockets-for-platform-engineers-240h)
 
-## Objetivo
+## Objective
 
-Praticar, em uma VM ou container Linux, os comandos e o raciocínio usados para investigar problemas de rede, DNS e conectividade — a base que reaparece, quase sem tradução, dentro de Kubernetes (`Service`, `CoreDNS`, `Ingress`).
+Practice, on a Linux VM or container, the commands and reasoning used to investigate networking, DNS and connectivity problems — the foundation that reappears, almost untranslated, inside Kubernetes (`Service`, `CoreDNS`, `Ingress`).
 
-Pré-requisito: terminal básico e permissões (peças #1 e #2 desta trilha).
+Prerequisite: basic terminal and permissions (pieces #1 and #2 of this track).
 
-## Estrutura deste laboratório
+## Structure of this lab
 
 ```text
 04-redes-e-troubleshooting/
-├── README.md                  # este arquivo
+├── README.md                  # this file
 ├── 01-interfaces-e-rotas.md   # ip a, ip route
 ├── 02-dns.md                  # dig, resolvectl, /etc/resolv.conf
 ├── 03-portas-e-sockets.md     # ss, LISTEN vs ESTABLISHED
 └── 04-checklist-troubleshooting.md
 ```
 
-## 1. Interfaces e rotas
+## 1. Interfaces and routes
 
 ```bash
 ip a
@@ -28,53 +28,53 @@ ip route
 ip route get 8.8.8.8
 ```
 
-**Exercício:** rode `ip a` na sua máquina e identifique: qual interface tem a rota padrão, e qual endereço IP está associado a ela. Se você tiver Docker instalado, rode `ip a` de novo e note a interface nova (`docker0` ou `br-...`) que aparece.
+**Exercise:** run `ip a` on your machine and identify: which interface holds the default route, and which IP address is attached to it. If you have Docker installed, run `ip a` again and note the new interface (`docker0` or `br-...`) that shows up.
 
-**O que observar:** a saída de `ip route get <ip>` mostra explicitamente por qual interface e via qual gateway aquele destino específico seria alcançado — útil quando há mais de uma rota possível.
+**What to observe:** the output of `ip route get <ip>` explicitly shows through which interface and via which gateway that specific destination would be reached — useful when more than one route is possible.
 
 ## 2. DNS
 
 ```bash
-dig exemplo.com
-dig exemplo.com +trace
+dig example.com
+dig example.com +trace
 resolvectl status
 cat /etc/resolv.conf
 ```
 
-**Exercício:** escolha um domínio que você sabe que não existe (ex.: `isso-nao-existe-de-verdade.com`) e rode `dig` nele. Compare a resposta (`NXDOMAIN`) com a de um domínio real. Depois rode `dig +trace` em um domínio real e leia a cadeia de servidores retornada — dos root servers até a resposta final.
+**Exercise:** pick a domain you know doesn't exist (e.g. `this-really-does-not-exist.com`) and run `dig` against it. Compare the answer (`NXDOMAIN`) with that of a real domain. Then run `dig +trace` on a real domain and read the chain of servers it returns — from the root servers down to the final answer.
 
-**Padrão para memorizar:** "resolve por IP, não resolve por nome" quase sempre aponta para DNS, não para rede ou firewall.
+**Pattern worth memorizing:** "resolves by IP, doesn't resolve by name" almost always points to DNS, not to networking or the firewall.
 
-## 3. Portas e sockets
+## 3. Ports and sockets
 
 ```bash
 ss -tulpn
 ss -tan
 ```
 
-**Exercício:** suba um servidor HTTP simples (`python3 -m http.server 8080`) e, em outro terminal, confirme com `ss -tulpn` que a porta 8080 aparece em `LISTEN`. Pare o servidor e rode o comando de novo — a porta some da lista. Depois, repita o teste trocando o bind para `127.0.0.1` apenas (`python3 -m http.server 8080 --bind 127.0.0.1`) e tente acessar via o IP da máquina em vez de `localhost` — reproduz, de forma controlada, o erro clássico de "escuta na porta certa, recusa a conexão".
+**Exercise:** start a simple HTTP server (`python3 -m http.server 8080`) and, in another terminal, confirm with `ss -tulpn` that port 8080 shows up as `LISTEN`. Stop the server and run the command again — the port disappears from the list. Then repeat the test, binding only to `127.0.0.1` (`python3 -m http.server 8080 --bind 127.0.0.1`), and try to reach it via the machine's IP instead of `localhost` — this reproduces, in a controlled way, the classic "listening on the right port, connection refused" error.
 
-## 4. Checklist de troubleshooting
+## 4. Troubleshooting checklist
 
-Ordem recomendada para investigar "não conecta", sempre por evidência, nunca por suposição:
+Recommended order for investigating "can't connect", always by evidence, never by assumption:
 
-1. A porta está escutando? (`ss -tulpn` no host do serviço)
-2. Em qual interface? (`0.0.0.0` vs `127.0.0.1`)
-3. O nome resolve para o IP certo? (`dig`)
-4. Existe rota até o destino? (`ip route get <ip>`)
-5. Alguma regra de firewall descarta o pacote no caminho?
-6. O handshake TCP completa? (`ss -tan` do lado do cliente durante a tentativa)
+1. Is the port listening? (`ss -tulpn` on the service's host)
+2. On which interface? (`0.0.0.0` vs `127.0.0.1`)
+3. Does the name resolve to the right IP? (`dig`)
+4. Is there a route to the destination? (`ip route get <ip>`)
+5. Does any firewall rule drop the packet along the way?
+6. Does the TCP handshake complete? (`ss -tan` on the client side during the attempt)
 
-## Por que isso importa em Kubernetes
+## Why this matters in Kubernetes
 
-- `Service`/`ClusterIP` → regras de `iptables`/`ipvs` fazendo o mesmo trabalho de encaminhar pacote para o socket certo.
-- `CoreDNS` → o mesmo problema de resolução de nome, rodando dentro do cluster.
-- `Ingress` que não responde → geralmente os mesmos seis passos do checklist acima, com uma camada de abstração a mais.
+- `Service`/`ClusterIP` → `iptables`/`ipvs` rules doing the same job of forwarding a packet to the right socket.
+- `CoreDNS` → the same name-resolution problem, running inside the cluster.
+- An `Ingress` that doesn't respond → usually the same six steps from the checklist above, with one extra layer of abstraction.
 
-## Próxima peça da trilha
+## Next piece of the track
 
-`05-containers-under-the-hood/` (namespaces e cgroups) — em breve.
+`05-containers-under-the-hood/` (namespaces and cgroups) — coming soon.
 
 ---
 
-*Série Linux do Zero — [Roger Oliveira](https://www.linkedin.com/in/oliveiraroger/). Repositório: [kubernetes-do-zero-ptbr](https://github.com/roger-oliveira86/kubernetes-do-zero-ptbr).*
+*Linux From Scratch series — [Roger Oliveira](https://www.linkedin.com/in/oliveiraroger/). Repository: [kubernetes-do-zero-ptbr](https://github.com/roger-oliveira86/kubernetes-do-zero-ptbr).*
