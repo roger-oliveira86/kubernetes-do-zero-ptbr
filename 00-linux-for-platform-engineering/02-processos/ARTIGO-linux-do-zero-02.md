@@ -1,64 +1,64 @@
-# Linux do Zero #2 — Processos: o que roda por baixo do seu terminal
+# Linux From Scratch #2 — Processes: what runs underneath your terminal
 
-*Parte 2 da série "Linux do Zero". Se você ainda não leu a #1, ela está no Medium e no DEV.to — comece por lá para entender a proposta: investigar por evidências, não decorar comando.*
+*Part 2 of the "Linux From Scratch" series. If you haven't read #1 yet, it's on Medium and DEV.to — start there to understand the premise: investigate by evidence, not by memorizing commands.*
 
-## O problema que ninguém explica direito
+## The problem nobody quite explains
 
-Você já rodou `ps aux` e viu uma lista enorme de linhas passar na tela, sem saber muito bem o que fazer com aquilo? A maioria dos tutoriais te ensina a rodar o comando, mas não te ensina a *pensar* em cima do resultado. Esse post é sobre isso: como transformar uma lista de números em um raciocínio sobre o que a sua máquina está realmente fazendo.
+Have you ever run `ps aux` and watched a huge list of lines scroll by, without really knowing what to do with it? Most tutorials teach you to run the command, but not to *think* about the result. This post is about that: turning a list of numbers into reasoning about what your machine is actually doing.
 
-## O experimento
+## The experiment
 
-Abra dois terminais lado a lado. No primeiro, rode:
+Open two terminals side by side. In the first one, run:
 
 ```bash
 sleep 300 &
 ```
 
-Isso cria um processo que só fica "dormindo" por 300 segundos — sem fazer nada de útil, de propósito, para servirmos de cobaia.
+This creates a process that just "sleeps" for 300 seconds — doing nothing useful, on purpose, so it can serve as our guinea pig.
 
-No segundo terminal, rode:
+In the second terminal, run:
 
 ```bash
 ps -eo pid,ppid,stat,etime,cmd | grep sleep
 ```
 
-Você vai ver uma linha parecida com esta:
+You'll see a line similar to this:
 
 ```
   PID   PPID STAT     ELAPSED CMD
 12345   9876 S           0:03 sleep 300
 ```
 
-Agora a pergunta que importa: **o que cada uma dessas colunas está te dizendo sobre a vida desse processo?**
+Now the question that matters: **what is each of these columns telling you about this process's life?**
 
-- `PID` — a identidade única desse processo enquanto ele existir.
-- `PPID` — quem criou esse processo (o processo pai). No seu caso, provavelmente o próprio shell do primeiro terminal.
-- `STAT` — o estado atual. `S` significa "sleeping" (interrompível). Você vai ver `R` (rodando), `Z` (zumbi) e `D` (esperando I/O não interrompível) em outros contextos — cada um conta uma história diferente sobre o que está travando ou não o sistema.
-- `ETIME` — há quanto tempo ele existe.
+- `PID` — this process's unique identity for as long as it exists.
+- `PPID` — who created this process (the parent process). In your case, probably the first terminal's own shell.
+- `STAT` — the current state. `S` means "sleeping" (interruptible). You'll see `R` (running), `Z` (zombie) and `D` (waiting on uninterruptible I/O) in other contexts — each one tells a different story about what is or isn't stalling the system.
+- `ETIME` — how long it has existed.
 
-## Por que isso importa de verdade
+## Why this actually matters
 
-Em produção, ninguém roda `sleep` de propósito — mas todo incidente de performance que já investiguei começou exatamente com essa pergunta: "quais processos estão rodando, quem é o pai de quem, e em que estado eles estão parados?". Um processo em estado `D` (uninterruptible sleep) por muito tempo, por exemplo, é quase sempre sintoma de um disco ou storage sofrendo — não de aplicação com bug.
+In production, nobody runs `sleep` on purpose — but every performance incident I've ever investigated started with exactly this question: "which processes are running, who is whose parent, and what state are they stuck in?" A process stuck in `D` (uninterruptible sleep) for a long time, for example, is almost always a symptom of a disk or storage system struggling — not an application bug.
 
-Tente agora matar o processo pelo pai, não pelo `sleep` diretamente:
+Now try killing the process through its parent, not through `sleep` directly:
 
 ```bash
-kill -TERM <PPID_do_seu_shell>
+kill -TERM <your_shell's_PPID>
 ```
 
-**Não rode isso de verdade no seu terminal principal** — é só para você visualizar mentalmente o que aconteceria: ao matar o processo pai, o `sleep` filho normalmente também morre (ou é "adotado" pelo `init`/`systemd`, dependendo do sistema). Esse comportamento de reparentamento é a mesma lógica por trás de por que, quando um container morre inesperadamente, os processos que ele hospedava desaparecem juntos.
+**Don't actually run this in your main terminal** — it's just for you to picture mentally what would happen: killing the parent process usually also kills the child `sleep` (or it gets "adopted" by `init`/`systemd`, depending on the system). This reparenting behavior is the same logic behind why, when a container dies unexpectedly, the processes it hosted disappear along with it.
 
-## A ponte para onde essa trilha está indo
+## The bridge to where this track is heading
 
-Essa relação pai/filho de processos é exatamente o que o Linux usa como base para isolar processos em namespaces — o mecanismo que, mais adiante nesta trilha, vira containers, e que o Kubernetes orquestra em escala. Entender processo, hoje, sem pressa, é o que faz o "aha" acontecer quando você chegar em `cgroups` e `namespaces` daqui a duas ou três postagens.
+This process parent/child relationship is exactly what Linux uses as the foundation for isolating processes into namespaces — the mechanism that, further along this track, becomes containers, and that Kubernetes orchestrates at scale. Understanding process, today, without rushing, is what makes the "aha" moment happen when you reach `cgroups` and `namespaces` two or three posts from now.
 
-## Para você investigar por conta própria
+## For you to investigate on your own
 
-Antes do próximo post, tente responder isto na sua própria máquina (não me responda aqui, é para você mesmo):
+Before the next post, try answering this on your own machine (no need to reply to me, it's for you):
 
-1. Rode `ps -eo pid,ppid,stat,etime,cmd --forest` e identifique visualmente qual processo é pai de qual.
-2. Ache um processo em estado `Z` (zumbi) — se não tiver nenhum, isso já é uma informação: seu sistema está saudável nesse quesito agora.
-3. Compare `ps aux` com `top` (ou `htop`) rodando ao mesmo tempo — o que muda entre uma foto estática e uma visão contínua?
+1. Run `ps -eo pid,ppid,stat,etime,cmd --forest` and visually identify which process is the parent of which.
+2. Find a process in state `Z` (zombie) — if you don't find one, that's already information: your system is healthy on that front right now.
+3. Compare `ps aux` with `top` (or `htop`) running at the same time — what changes between a static snapshot and a continuous view?
 
 ---
-*Próximo da trilha: namespaces e o que realmente isola um processo do outro — a base de tudo que chamamos hoje de "container".*
+*Next in the track: namespaces, and what actually isolates one process from another — the foundation of everything we now call a "container".*

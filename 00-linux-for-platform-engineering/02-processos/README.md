@@ -1,49 +1,49 @@
-# 02 — Processos
+# 02 — Processes
 
-> Trilha: Linux → **processos** → redes → containers → Docker → containerd → Kubernetes → observabilidade → SRE → Platform Engineering → arquitetura.
+> Track: Linux → **processes** → networking → containers → Docker → containerd → Kubernetes → observability → SRE → Platform Engineering → architecture.
 
-## Objetivo deste capítulo
+## Objective of this chapter
 
-Entender o que um processo realmente é no Linux: identidade (PID), hierarquia (PPID), estado (STAT) e tempo de vida (ETIME) — a base conceitual para os capítulos de namespaces e containers, mais à frente.
+Understand what a process actually is on Linux: identity (PID), hierarchy (PPID), state (STAT) and lifetime (ETIME) — the conceptual base for the namespaces and containers chapters ahead.
 
-## Experimento guiado
+## Guided experiment
 
-1. Crie um processo de teste:
+1. Create a test process:
    ```bash
    sleep 300 &
    ```
-2. Inspecione-o:
+2. Inspect it:
    ```bash
    ps -eo pid,ppid,stat,etime,cmd | grep sleep
    ```
-3. Leia a hierarquia completa do sistema:
+3. Read the system's full hierarchy:
    ```bash
    ps -eo pid,ppid,stat,etime,cmd --forest
    ```
 
-## Referência rápida — campos do `ps`
+## Quick reference — `ps` fields
 
-| Campo | O que significa | Por que importa em produção |
+| Field | What it means | Why it matters in production |
 |---|---|---|
-| `PID` | Identificador único do processo | Base para qualquer ação de diagnóstico ou kill |
-| `PPID` | PID do processo pai | Explica reparentamento e por que "matar o pai" derruba os filhos |
-| `STAT` | Estado atual (`R`, `S`, `D`, `Z`, ...) | `D` prolongado aponta para espera não interrompível, frequentemente ligada a I/O ou armazenamento; investigue o recurso aguardado antes de concluir a causa |
-| `ETIME` | Tempo de vida do processo | Ajuda a distinguir processo recém-criado de processo travado há horas |
+| `PID` | Unique process identifier | Basis for any diagnostic or kill action |
+| `PPID` | Parent process's PID | Explains reparenting and why "killing the parent" takes down the children |
+| `STAT` | Current state (`R`, `S`, `D`, `Z`, ...) | A prolonged `D` points to uninterruptible waiting, often tied to I/O or storage; investigate the resource being waited on before concluding the cause |
+| `ETIME` | Process lifetime | Helps distinguish a freshly created process from one stuck for hours |
 
-## Exercícios
+## Exercises
 
-- [ ] Rode `ps -eo pid,ppid,stat,etime,cmd --forest` e identifique 3 relações pai/filho no seu sistema.
-- [ ] Encontre (ou não encontre) um processo `Z` — registre o resultado.
-- [ ] Compare a saída estática de `ps aux` com a visão contínua de `top`/`htop`.
+- [ ] Run `ps -eo pid,ppid,stat,etime,cmd --forest` and identify 3 parent/child relationships on your system.
+- [ ] Find (or fail to find) a `Z` process — write down the result.
+- [ ] Compare the static output of `ps aux` with the continuous view of `top`/`htop`.
 
-## Por que este capítulo importa para Kubernetes
+## Why this chapter matters for Kubernetes
 
-Namespaces do kernel Linux (o assunto do próximo capítulo) isolam exatamente essas mesmas árvores de processo. Um Pod do Kubernetes, por baixo, é um ou mais processos Linux isolados por namespace — entender processo aqui é o que faz `kubectl describe pod` fazer sentido lá na frente.
+Linux kernel namespaces (the subject of the next chapter) isolate exactly these same process trees. A Kubernetes Pod, underneath, is one or more Linux processes isolated by namespace — understanding process here is what makes `kubectl describe pod` make sense later on.
 
-## Artigo completo
+## Full article
 
-Leia a versão narrativa completa deste capítulo em [`ARTIGO-linux-do-zero-02.md`](./ARTIGO-linux-do-zero-02.md), também publicada no [Medium](https://medium.com/@rogeroliveira86) e no [DEV.to](https://dev.to/rogeroliveira86).
+Read the full narrative version of this chapter in [`ARTIGO-linux-do-zero-02.md`](./ARTIGO-linux-do-zero-02.md), also published on [Medium](https://medium.com/@rogeroliveira86) and [DEV.to](https://dev.to/rogeroliveira86).
 
-## Próximo capítulo
+## Next chapter
 
-`03-namespaces` — o que realmente isola um processo do outro.
+`03-namespaces` — what actually isolates one process from another.
