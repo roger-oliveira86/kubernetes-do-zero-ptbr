@@ -1,126 +1,126 @@
-# Linux do Zero #4 — Usuários, grupos e permissões
+# Linux From Scratch #4 — Users, groups and permissions
 
-> Parte da trilha **Linux do Zero**, base para quem vai trabalhar com plataforma, SRE e Kubernetes.
-> Anteriores: [#1 Distros e terminal](../01-distros-e-terminal) · [#2 Processos](../02-processos) · [#3 Redes e troubleshooting](../04-redes-e-troubleshooting)
+> Part of the **Linux From Scratch** track, foundational for anyone working with platform, SRE and Kubernetes.
+> Previous: [#1 Distros and terminal](../01-distros-e-terminal) · [#2 Processes](../02-processos) · [#3 Networking and troubleshooting](../04-redes-e-troubleshooting)
 
-## Por que esta peça existe
+## Why this piece exists
 
-`Permission denied` é o erro mais comum e mais mal resolvido da operação. A "solução" habitual — `chmod 777` ou rodar como root — não resolve nada: só desliga a checagem. Este material explica o modelo por baixo, para que a correção seja cirúrgica.
+`Permission denied` is the most common, and most poorly fixed, error in operations. The usual "solution" — `chmod 777` or running as root — doesn't fix anything: it just turns off the check. This material explains the model underneath, so the fix can be surgical.
 
-## Conteúdo
+## Contents
 
-- [1. UID e GID: o Linux só conhece números](#1-uid-e-gid)
-- [2. Os três dígitos explicados](#2-os-três-dígitos)
-- [3. chmod, chown e o `X` maiúsculo](#3-chmod-e-chown)
-- [4. setuid, setgid e sticky bit](#4-bits-especiais)
+- [1. UID and GID: Linux only knows numbers](#1-uid-and-gid)
+- [2. The three digits explained](#2-the-three-digits)
+- [3. chmod, chown and capital `X`](#3-chmod-and-chown)
+- [4. setuid, setgid and the sticky bit](#4-special-bits)
 - [5. umask](#5-umask)
-- [6. Aplicação em Kubernetes](#6-kubernetes)
-- [7. Roteiro de investigação](#7-investigação)
-- [8. Exercício](#8-exercício)
+- [6. Applying it to Kubernetes](#6-kubernetes)
+- [7. Investigation checklist](#7-investigation)
+- [8. Exercise](#8-exercise)
 
 ---
 
-## 1. UID e GID
+## 1. UID and GID
 
-O kernel não conhece nomes de usuário. Conhece números.
+The kernel doesn't know usernames. It knows numbers.
 
 ```bash
 id
 # uid=1000(roger) gid=1000(roger) groups=1000(roger),27(sudo),999(docker)
 ```
 
-Onde ficam os mapeamentos:
+Where the mappings live:
 
-| Arquivo | Guarda |
+| File | Holds |
 |---|---|
-| `/etc/passwd` | usuário, UID, GID primário, home, shell |
-| `/etc/group` | grupos e seus membros |
-| `/etc/shadow` | hashes de senha (só root lê) |
+| `/etc/passwd` | user, UID, primary GID, home, shell |
+| `/etc/group` | groups and their members |
+| `/etc/shadow` | password hashes (only root can read) |
 
-Formato de `/etc/passwd`:
+`/etc/passwd` format:
 
 ```
 roger:x:1000:1000:Roger Oliveira:/home/roger:/bin/bash
-nome:senha:UID:GID:comentário:home:shell
+name:password:UID:GID:comment:home:shell
 ```
 
-**Implicação para containers:** o container tem seu próprio `/etc/passwd`, mas compartilha o kernel — e portanto os UIDs — com o host. Permissão em volume é resolvida por número, não por nome.
+**Implication for containers:** the container has its own `/etc/passwd`, but shares the kernel — and therefore the UIDs — with the host. Volume permission is resolved by number, not by name.
 
-## 2. Os três dígitos
+## 2. The three digits
 
-Três classes (`user`, `group`, `others`) × três permissões:
+Three classes (`user`, `group`, `others`) × three permissions:
 
-| Letra | Valor | Arquivo | Diretório |
+| Letter | Value | File | Directory |
 |---|---|---|---|
-| `r` | 4 | ler conteúdo | listar nomes |
-| `w` | 2 | alterar conteúdo | criar/remover/renomear |
-| `x` | 1 | executar | **atravessar** |
+| `r` | 4 | read content | list names |
+| `w` | 2 | change content | create/remove/rename |
+| `x` | 1 | execute | **traverse** |
 
 ```
 -rw-r--r--  →  6 4 4  →  644
  │ │  │  └── others: r--
  │ │  └───── group:  r--
  │ └──────── user:   rw-
- └────────── tipo (- arquivo, d diretório, l link)
+ └────────── type (- file, d directory, l link)
 ```
 
-Padrões comuns:
+Common patterns:
 
-| Octal | Uso |
+| Octal | Use |
 |---|---|
-| `644` | arquivo de configuração |
-| `600` | chave privada, segredo |
-| `755` | binário, diretório |
-| `700` | diretório privado |
+| `644` | config file |
+| `600` | private key, secret |
+| `755` | binary, directory |
+| `700` | private directory |
 | `1777` | `/tmp` (777 + sticky bit) |
 
-### `x` em diretório é travessia, não execução
+### `x` on a directory is traversal, not execution
 
-A permissão precisa valer no caminho inteiro. Diagnóstico em um comando:
+The permission has to hold across the entire path. Diagnose it in one command:
 
 ```bash
-namei -l /dados/app/config.yml
+namei -l /data/app/config.yml
 ```
 
-Ele imprime cada nível do caminho com dono, grupo e permissão — e mostra exatamente onde a travessia é negada.
+It prints each level of the path with owner, group and permission — and shows exactly where traversal is denied.
 
-## 3. chmod e chown
+## 3. chmod and chown
 
 ```bash
-chmod 640 segredo.env            # octal
-chmod u+x deploy.sh              # simbólico
+chmod 640 secret.env             # octal
+chmod u+x deploy.sh              # symbolic
 chmod g-w app.conf
-chmod o= segredo.env             # zera "others"
+chmod o= secret.env              # zero out "others"
 
 chown app:platform config.yml
 chown -R app:platform /opt/app
 chgrp platform config.yml
 ```
 
-**Recursividade sem estrago** — `X` maiúsculo aplica execução só em diretórios:
+**Recursive without wrecking things** — capital `X` applies execute only to directories:
 
 ```bash
 chmod -R u=rwX,go=rX /opt/app
 ```
 
-`chmod -R 755` marcaria todo arquivo de dados como executável. Evite.
+`chmod -R 755` would mark every data file as executable. Avoid it.
 
-## 4. Bits especiais
+## 4. Special bits
 
-| Bit | Octal | Aparece como | Efeito |
+| Bit | Octal | Shows up as | Effect |
 |---|---|---|---|
-| setuid | 4000 | `-rwsr-xr-x` | executa com privilégio do **dono do arquivo** |
-| setgid | 2000 | `drwxr-sr-x` | arquivos criados herdam o **grupo do diretório** |
-| sticky | 1000 | `drwxrwxrwt` | só o dono do arquivo pode apagá-lo |
+| setuid | 4000 | `-rwsr-xr-x` | runs with the **file owner's** privilege |
+| setgid | 2000 | `drwxr-sr-x` | files created inherit the **directory's group** |
+| sticky | 1000 | `drwxrwxrwt` | only the file's owner can delete it |
 
-Diretório compartilhado feito do jeito certo:
+A shared directory done the right way:
 
 ```bash
-chgrp platform /srv/compartilhado
-chmod 2775 /srv/compartilhado
+chgrp platform /srv/shared
+chmod 2775 /srv/shared
 ```
 
-Auditoria de setuid (primeira parada em máquina suspeita):
+setuid audit (first stop on a suspicious machine):
 
 ```bash
 find / -perm -4000 -type f 2>/dev/null
@@ -128,19 +128,19 @@ find / -perm -4000 -type f 2>/dev/null
 
 ## 5. umask
 
-Máscara que **remove** bits do padrão de criação.
+A mask that **removes** bits from the default creation permission.
 
 ```bash
 umask        # 0022
 ```
 
-| umask | Arquivo (666−) | Diretório (777−) |
+| umask | File (666−) | Directory (777−) |
 |---|---|---|
 | `022` | 644 | 755 |
 | `027` | 640 | 750 |
 | `077` | 600 | 700 |
 
-Se um arquivo gerado por pipeline nasce com permissão errada, quase sempre a causa é o `umask` do processo que o criou.
+If a file generated by a pipeline is born with the wrong permission, the cause is almost always the `umask` of the process that created it.
 
 ## 6. Kubernetes
 
@@ -153,54 +153,54 @@ securityContext:
   readOnlyRootFilesystem: true
 ```
 
-| Campo | O que faz de verdade |
+| Field | What it actually does |
 |---|---|
-| `runAsUser` | define o UID do processo — não precisa existir no `/etc/passwd` da imagem |
-| `runAsGroup` | define o GID primário |
-| `fsGroup` | para tipos de volume compatíveis, informa o grupo suplementar do processo e pode orientar o ajuste de grupo/permissões no volume montado |
-| `runAsNonRoot` | kubelet recusa subir se a imagem rodar como UID 0 |
+| `runAsUser` | sets the process's UID — it doesn't need to exist in the image's `/etc/passwd` |
+| `runAsGroup` | sets the primary GID |
+| `fsGroup` | for compatible volume types, tells the process's supplemental group and can drive group/permission adjustment on the mounted volume |
+| `runAsNonRoot` | the kubelet refuses to start the pod if the image runs as UID 0 |
 
-**Armadilhas:**
+**Pitfalls:**
 
-- `whoami: cannot find name for user ID 1000` não é erro — é só a ausência de tradução número→nome na imagem.
-- Em NFS e em drivers CSI, `fsGroup` pode não ser suficiente ou o ajuste de ownership pode ser delegado ao driver. Verifique o export, o mapeamento de IDs e a documentação do driver antes de assumir esse comportamento.
+- `whoami: cannot find name for user ID 1000` is not an error — it's just the absence of a number→name translation in the image.
+- On NFS and with CSI drivers, `fsGroup` may not be enough, or ownership adjustment may be delegated to the driver. Check the export, the ID mapping and the driver's documentation before assuming this behavior.
 
-## 7. Investigação
+## 7. Investigation
 
 ```bash
-id                          # quem eu sou (UID/GID)
-ls -ln arquivo              # dono do arquivo em NÚMERO
-namei -l /caminho/completo  # travessia do caminho inteiro
-stat arquivo                # permissão detalhada + bits especiais
-getfacl arquivo             # ACL sobrepondo o modelo tradicional?
+id                          # who am I (UID/GID)
+ls -ln file                 # file owner as a NUMBER
+namei -l /full/path         # traversal of the entire path
+stat file                   # detailed permission + special bits
+getfacl file                # an ACL overriding the traditional model?
 ```
 
-Se tudo acima estiver correto e ainda negar, olhe a camada acima:
+If all of the above checks out and it's still denying access, look one layer up:
 
 ```bash
 getenforce
 ausearch -m avc -ts recent
 ```
 
-## 8. Exercício
+## 8. Exercise
 
 ```bash
 mkdir -p /tmp/lab && cd /tmp/lab
-touch publico.txt privado.txt
-chmod 644 publico.txt
-chmod 600 privado.txt
-mkdir compartilhado && chmod 2775 compartilhado
+touch public.txt private.txt
+chmod 644 public.txt
+chmod 600 private.txt
+mkdir shared && chmod 2775 shared
 ls -ln
-stat compartilhado | head -5
+stat shared | head -5
 umask
 ```
 
-Responda sem consultar:
+Answer without looking anything up:
 
-1. Por que `privado.txt` não é legível por alguém do mesmo grupo?
-2. O que o `2` em `2775` muda no diretório?
-3. Com `umask 0022`, com que permissão nasce um diretório?
+1. Why can't someone in the same group read `private.txt`?
+2. What does the `2` in `2775` change on the directory?
+3. With `umask 0022`, what permission does a new directory get?
 
 ---
 
-**Próxima peça:** discos, sistemas de arquivos e montagem.
+**Next piece:** disks, filesystems and mounting.
