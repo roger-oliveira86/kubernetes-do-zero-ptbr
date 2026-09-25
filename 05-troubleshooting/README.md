@@ -1,4 +1,3 @@
-# Módulo 05 - Troubleshooting
+# Module 05 - Troubleshooting
 
-Conteúdo planejado: investigação de Pods, nodes, componentes do cluster, logs, eventos, serviços, rede e consumo de recursos.
-
+Planned content: investigating Pods, nodes, cluster components, logs, events, services, networking and resource usage.

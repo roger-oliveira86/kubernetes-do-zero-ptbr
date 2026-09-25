@@ -1,46 +1,45 @@
 # Roadmap
 
-O roadmap acompanha uma jornada de aprendizado e não representa garantia de cobertura integral da prova CKA.
+The roadmap tracks a learning journey and doesn't represent a guarantee of full CKA exam coverage.
 
-## Fase 1 - Fundação
+## Phase 1 - Foundation
 
-- Estrutura do repositório.
-- Conceitos essenciais.
-- Primeiro laboratório no navegador.
-- Glossário inicial.
+- Repository structure.
+- Essential concepts.
+- First lab in the browser.
+- Initial glossary.
 
-## Fase 2 - Workloads
+## Phase 2 - Workloads
 
 - Pods.
 - Deployments.
-- ConfigMaps e Secrets.
-- Scheduling e autoscaling.
+- ConfigMaps and Secrets.
+- Scheduling and autoscaling.
 
-## Fase 3 - Administração do cluster
+## Phase 3 - Cluster administration
 
-- Componentes do control plane.
+- Control plane components.
 - kubeadm.
 - RBAC.
-- Upgrade e ciclo de vida.
-- Helm, Kustomize e extensões.
+- Upgrade and lifecycle.
+- Helm, Kustomize and extensions.
 
-## Fase 4 - Networking e storage
+## Phase 4 - Networking and storage
 
-- Services e descoberta.
+- Services and discovery.
 - Network Policies.
-- Ingress e Gateway API.
+- Ingress and Gateway API.
 - CoreDNS.
-- PV, PVC e StorageClasses.
+- PV, PVC and StorageClasses.
 
-## Fase 5 - Troubleshooting
+## Phase 5 - Troubleshooting
 
-- Pods e workloads.
-- Nodes e componentes do cluster.
-- Logs e eventos.
-- Serviços e rede.
-- Uso de recursos.
+- Pods and workloads.
+- Nodes and cluster components.
+- Logs and events.
+- Services and networking.
+- Resource usage.
 
-## Meta inicial
+## Initial goal
 
-Publicar quatro módulos validados até dezembro de 2026, sem assumir o compromisso de concluir um curso completo nesse período.
-
+Publish four validated modules by December 2026, without committing to finishing a complete course in that period.

@@ -1,26 +1,25 @@
-# Recomendações e fontes
+# Recommendations and sources
 
-Este material é um guia prático de entrada. A documentação oficial e o currículo vigente devem ser tratados como fontes primárias.
+This material is a practical starting guide. The official documentation and the current curriculum should be treated as primary sources.
 
-## Fontes oficiais
+## Official sources
 
 - [Kubernetes Documentation](https://kubernetes.io/docs/)
 - [CKA - Linux Foundation](https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/)
-- [Recursos permitidos no exame](https://docs.linuxfoundation.org/tc-docs/certification/certification-resources-allowed)
+- [Resources allowed in the exam](https://docs.linuxfoundation.org/tc-docs/certification/certification-resources-allowed)
 
-## Prática no navegador
+## Browser-based practice
 
-- [Killercoda](https://killercoda.com/): cenários executados no navegador.
+- [Killercoda](https://killercoda.com/): scenarios run in the browser.
 
-## Cursos e comunidades
+## Courses and communities
 
-- KodeKloud, incluindo materiais de Mumshad Mannambeth.
-- LINUXtips e conteúdos de Jeferson Fernando.
-- Comunidades Kubernetes e Cloud Native locais.
+- KodeKloud, including materials from Mumshad Mannambeth.
+- LINUXtips and content from Jeferson Fernando.
+- Local Kubernetes and Cloud Native communities.
 
-As referências são independentes e não representam afiliação, patrocínio ou garantia de aprovação.
+These references are independent and don't represent affiliation, sponsorship or a guarantee of passing.
 
-## Simulador
+## Simulator
 
-Na consulta realizada em agosto de 2026, a compra da CKA incluía dois acessos ao simulador Killer.sh, com 36 horas por ativação. Confirme as condições atuais diretamente na Linux Foundation antes da compra.
-
+As checked in August 2026, the CKA purchase included two accesses to the Killer.sh simulator, with 36 hours per activation. Confirm current terms directly with the Linux Foundation before purchasing.

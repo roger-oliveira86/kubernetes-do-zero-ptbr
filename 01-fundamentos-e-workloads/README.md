@@ -1,4 +1,3 @@
-# Módulo 01 - Fundamentos e workloads
+# Module 01 - Fundamentals and workloads
 
-Conteúdo planejado: Pods, Deployments, ConfigMaps, Secrets, scheduling, autoscaling, rolling updates e rollbacks.
-
+Planned content: Pods, Deployments, ConfigMaps, Secrets, scheduling, autoscaling, rolling updates and rollbacks.
