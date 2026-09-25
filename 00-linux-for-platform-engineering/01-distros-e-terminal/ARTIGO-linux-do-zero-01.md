@@ -1,62 +1,62 @@
 
-# Linux do Zero #1: o que é Linux e qual distribuição escolher?
+# Linux From Scratch #1: what is Linux, and which distribution should you pick?
 
-Quando alguém começa a estudar DevOps, SRE ou Kubernetes, normalmente encontra uma lista de ferramentas: Docker, Terraform, Kubernetes, Helm, ArgoCD e muitas outras.
+When someone starts studying DevOps, SRE or Kubernetes, they usually run into a list of tools: Docker, Terraform, Kubernetes, Helm, ArgoCD and many others.
 
-Mas existe uma camada anterior a tudo isso: o sistema operacional.
+But there's a layer underneath all of that: the operating system.
 
-Se você não entende processos, permissões, serviços, rede e logs, qualquer erro em um container ou em um cluster parece misterioso.
+If you don't understand processes, permissions, services, networking and logs, any error inside a container or a cluster looks like a mystery.
 
-## Linux não é apenas o terminal
+## Linux isn't just the terminal
 
-Linux é o núcleo que coordena recursos como CPU, memória, armazenamento, rede e processos. Uma distribuição Linux reúne esse núcleo com ferramentas, bibliotecas, gerenciadores de pacotes e uma forma de instalação.
+Linux is the kernel that coordinates resources like CPU, memory, storage, networking and processes. A Linux distribution bundles that kernel with tools, libraries, package managers and an installation method.
 
-Por isso existem distribuições diferentes. Ubuntu, Debian, Fedora, Rocky Linux e Alpine usam Linux, mas possuem escolhas diferentes para gerenciamento, atualizações, segurança e objetivos de uso.
+That's why different distributions exist. Ubuntu, Debian, Fedora, Rocky Linux and Alpine all use Linux, but they make different choices around management, updates, security and intended use.
 
-## Qual distribuição escolher?
+## Which distribution should you pick?
 
 ### Ubuntu LTS
 
-É minha recomendação para o primeiro laboratório. Possui grande comunidade, bastante material didático e é muito comum em ambientes cloud.
+This is my recommendation for the first lab. It has a large community, plenty of learning material, and is very common in cloud environments.
 
-Use para:
+Use it to:
 
-- aprender Linux;
-- criar a primeira máquina virtual;
-- estudar Docker e Kubernetes;
-- montar laboratórios locais.
+- learn Linux;
+- create your first virtual machine;
+- study Docker and Kubernetes;
+- build local labs.
 
 ### Debian Stable
 
-É uma excelente escolha para quem quer entender uma base estável de servidor e o ecossistema Debian de forma mais direta.
+An excellent choice for understanding a stable server base and the Debian ecosystem more directly.
 
-Use depois do primeiro contato, quando você quiser comparar instalação, pacotes e administração de um sistema mais conservador.
+Use it after your first contact with Linux, when you want to compare installation, packages and administration on a more conservative system.
 
-### Fedora, Rocky Linux e RHEL
+### Fedora, Rocky Linux and RHEL
 
-Essas distribuições aproximam o aluno do ecossistema Red Hat, bastante presente em empresas. Fedora costuma trazer tecnologias mais recentes; Rocky Linux e RHEL são mais associados a ambientes corporativos.
+These distributions bring you closer to the Red Hat ecosystem, which is very present in companies. Fedora tends to ship newer technology; Rocky Linux and RHEL are more associated with corporate environments.
 
-Um tema importante nessa trilha é o SELinux, que mostra que segurança não deve ser resolvida simplesmente desativando controles.
+An important topic on this track is SELinux, which shows that security shouldn't be solved by simply disabling controls.
 
 ### Alpine Linux
 
-Alpine é muito útil para entender imagens pequenas e containers minimalistas. Porém, não é minha recomendação para começar Linux do zero.
+Alpine is very useful for understanding small images and minimal containers. It is not, however, my recommendation for learning Linux from scratch.
 
-Primeiro aprenda processos, arquivos, permissões, rede e logs em uma distribuição mais completa. Depois compare o que muda em uma imagem Alpine.
+Learn processes, files, permissions, networking and logs on a more complete distribution first. Then compare what changes on an Alpine image.
 
-## Minha recomendação prática
+## My practical recommendation
 
-Siga esta ordem:
+Follow this order:
 
 ```text
-Ubuntu LTS → Debian Stable → Fedora/Rocky → Alpine em containers
+Ubuntu LTS → Debian Stable → Fedora/Rocky → Alpine in containers
 ```
 
-Não precisa substituir seu computador principal. Comece em uma máquina virtual, faça snapshots e trate cada erro como parte do laboratório.
+You don't need to replace your main computer. Start in a virtual machine, take snapshots, and treat every mistake as part of the lab.
 
-## O primeiro exercício
+## The first exercise
 
-Depois de iniciar uma VM Ubuntu, execute:
+After starting an Ubuntu VM, run:
 
 ```bash
 pwd
@@ -68,34 +68,34 @@ df -h
 free -h
 ```
 
-Agora responda:
+Now answer:
 
-1. Em qual diretório você está?
-2. Qual usuário está executando os comandos?
-3. Qual distribuição e versão estão instaladas?
-4. Quanto espaço em disco está disponível?
-5. Quanto de memória o sistema possui?
+1. Which directory are you in?
+2. Which user is running the commands?
+3. Which distribution and version are installed?
+4. How much disk space is available?
+5. How much memory does the system have?
 
-Parece simples, mas essa prática já começa a formar a mentalidade correta: antes de alterar o sistema, observe o estado atual.
+It looks simple, but this practice already starts building the right mindset: observe the current state before changing the system.
 
-## A mentalidade de Platform Engineering
+## The Platform Engineering mindset
 
-O caminho tradicional é decorar um comando para cada erro.
+The traditional path is to memorize a command for every error.
 
-O caminho profissional é investigar:
+The professional path is to investigate:
 
-- o processo está em execução?
-- o serviço está ativo?
-- a porta está aberta?
-- o DNS resolve?
-- o usuário tem permissão?
-- o log mostra qual causa?
+- is the process running?
+- is the service active?
+- is the port open?
+- does DNS resolve?
+- does the user have permission?
+- what does the log say the cause is?
 
-Essa mentalidade será essencial quando chegarmos a Docker, containerd, kubelet e Kubernetes.
+This mindset becomes essential once we get to Docker, containerd, kubelet and Kubernetes.
 
-## Próximo passo
+## Next step
 
-No próximo artigo, vamos explorar o terminal e os comandos que formam o kit diário de quem trabalha com infraestrutura:
+In the next article, we'll explore the terminal and the commands that make up the daily toolkit of anyone working with infrastructure:
 
 - `pwd`;
 - `ls`;
@@ -105,12 +105,12 @@ No próximo artigo, vamos explorar o terminal e os comandos que formam o kit di�
 - `ss`;
 - `journalctl`.
 
-O objetivo não é decorar uma lista. É saber qual pergunta cada comando ajuda a responder.
+The goal isn't to memorize a list. It's to know which question each command helps you answer.
 
-> Qual distribuição Linux você usou no seu primeiro servidor ou laboratório?
+> Which Linux distribution did you use on your first server or lab?
 
-## Referências oficiais
+## Official references
 
 - Ubuntu Desktop Guide: https://help.ubuntu.com/
-- Fedora Beginner’s Guide: https://docs.fedoraproject.org/en-US/beginners-guide/
+- Fedora Beginner's Guide: https://docs.fedoraproject.org/en-US/beginners-guide/
 - Debian Installation Guide: https://www.debian.org/releases/stable/amd64/
