@@ -1,22 +1,22 @@
-# Artigos técnicos
+# Technical articles
 
-Esta área reúne textos sobre decisões de plataforma, confiabilidade, operação e observabilidade.
+This area collects writing on platform decisions, reliability, operations and observability.
 
-O objetivo não é documentar ambientes reais. Cada ensaio usa exemplos sanitizados, separa fatos de interpretações e cita fontes primárias quando necessário.
+The goal isn't to document real environments. Each essay uses sanitized examples, separates facts from interpretation, and cites primary sources when necessary.
 
-## Ensaios publicados no repositório
+## Essays published in this repository
 
-| Ensaio | Tema |
+| Essay | Topic |
 | --- | --- |
-| [Observabilidade não é dashboard: é suporte à decisão](./ensaios/observabilidade-orientada-a-decisao.md) | Como métricas, logs e traces sustentam decisões sobre mudança, impacto e próximo passo seguro. |
-| [Migração em ondas com critérios de avanço e rollback](./ensaios/migracao-em-ondas-observabilidade-para-decidir-com-seguranca.md) | Critérios para avançar, pausar ou reverter uma mudança progressiva. |
-| [A ordem das ondas: o que cada etapa precisa ensinar](./ensaios/ordem-das-ondas-o-que-cada-etapa-precisa-ensinar.md) | Como ordenar mudanças em ondas pelo aprendizado que cada etapa gera para a próxima. |
+| [Observability isn't a dashboard: it's decision support](./ensaios/observabilidade-orientada-a-decisao.md) | How metrics, logs and traces support decisions about change, impact and the next safe step. |
+| [Wave migration with go/rollback criteria](./ensaios/migracao-em-ondas-observabilidade-para-decidir-com-seguranca.md) | Criteria for advancing, pausing or rolling back a progressive change. |
+| [The order of the waves: what each stage needs to teach](./ensaios/ordem-das-ondas-o-que-cada-etapa-precisa-ensinar.md) | How to order changes in waves by the learning each stage generates for the next. |
 
-## Fluxo editorial
+## Editorial flow
 
-1. O workflow cria um arquivo em `artigos/rascunhos/` numa branch e abre um Pull Request.
-2. O texto é revisado quanto a precisão técnica, clareza e sanitização.
-3. Antes do merge, o arquivo aprovado é promovido para `artigos/ensaios/` e recebe o status `publicado-no-repositorio`.
-4. Uma adaptação para LinkedIn, DEV.to ou Medium só ocorre por decisão explícita; o merge no GitHub não publica em outra plataforma.
+1. The workflow creates a file in `artigos/rascunhos/` on a branch and opens a Pull Request.
+2. The text is reviewed for technical accuracy, clarity and sanitization.
+3. Before the merge, the approved file is promoted to `artigos/ensaios/` and gets the `publicado-no-repositorio` status.
+4. An adaptation for LinkedIn, DEV.to or Medium only happens by explicit decision; merging on GitHub doesn't publish it on another platform.
 
-Assim, o repositório mantém evidência técnica sem transformar rascunhos em publicação automática.
+This way, the repository keeps technical evidence without turning drafts into automatic publication.

@@ -1,80 +1,80 @@
 ---
-title: "Observabilidade não é dashboard: é suporte à decisão"
+title: "Observability isn't a dashboard: it's decision support"
 status: publicado-no-repositorio
-tema: "Como métricas, logs e traces ajudam a avaliar mudança, impacto e próximo passo seguro"
+tema: "How metrics, logs and traces help assess change, impact and the next safe step"
 ---
 
-# Observabilidade não é dashboard: é suporte à decisão
+# Observability isn't a dashboard: it's decision support
 
-> Ensaio sanitizado. Não contém dados, sistemas ou incidentes identificáveis.
+> Sanitized essay. Contains no identifiable data, systems or incidents.
 
-## Tese
+## Thesis
 
-Um dashboard pode estar verde e, ainda assim, uma mudança não ser segura.
+A dashboard can be green, and a change can still not be safe.
 
-Monitoramento responde se um limiar foi ultrapassado. Observabilidade precisa ajudar a responder uma pergunta mais difícil: **diante deste comportamento, qual é o próximo passo com menor risco?**
+Monitoring answers whether a threshold was crossed. Observability needs to help answer a harder question: **given this behavior, what's the lowest-risk next step?**
 
-Essa diferença muda o papel da telemetria. Ela deixa de ser apenas uma coleção de gráficos e passa a sustentar decisões de engenharia.
+That difference changes telemetry's role. It stops being just a collection of graphs and starts backing engineering decisions.
 
-## Contexto
+## Context
 
-Mudanças em produção são inevitáveis: uma versão nova, uma alteração de configuração, uma dependência que passou a responder de modo diferente ou uma variação de carga.
+Changes in production are inevitable: a new release, a configuration change, a dependency that started responding differently, or a shift in load.
 
-O risco não está apenas em detectar que algo deu errado. Está em não conseguir distinguir rapidamente entre:
+The risk isn't only in detecting that something went wrong. It's in failing to quickly tell apart:
 
-- um desvio sem impacto relevante;
-- um problema localizado em uma jornada;
-- uma degradação que exige interromper a mudança;
-- e um incidente que pede rollback imediato.
+- a deviation with no relevant impact;
+- a problem localized to one journey;
+- a degradation that requires stopping the change;
+- and an incident that calls for an immediate rollback.
 
-Sem esse contexto, o time tende a decidir por percepção, pressão de tempo ou pelo gráfico mais chamativo.
+Without that context, the team tends to decide by gut feel, time pressure, or whichever graph looks the most alarming.
 
-## Decisão ou trade-off
+## Decision or trade-off
 
-Uma investigação operacional madura começa com quatro perguntas:
+A mature operational investigation starts with four questions:
 
-1. **O que mudou?**  
-   Versão, configuração, dependência, capacidade ou tráfego precisam ser visíveis no mesmo contexto da telemetria.
+1. **What changed?**
+   Version, configuration, dependency, capacity or traffic need to be visible in the same context as the telemetry.
 
-2. **Quem foi afetado?**  
-   Métricas de infraestrutura são necessárias, mas não substituem sinais da jornada do usuário: sucesso, latência, disponibilidade e comportamento de negócio.
+2. **Who was affected?**
+   Infrastructure metrics are necessary, but they don't replace signals from the user journey: success, latency, availability and business behavior.
 
-3. **Qual é o escopo?**  
-   Logs mostram eventos específicos; traces conectam chamadas distribuídas; métricas mostram tendência e proporção. Nenhum desses sinais é suficiente isoladamente.
+3. **What's the scope?**
+   Logs show specific events; traces connect distributed calls; metrics show trend and proportion. None of these signals is enough on its own.
 
-4. **Qual é a próxima ação segura?**  
-   Avançar, pausar, reduzir o escopo, aplicar mitigação ou executar rollback são decisões diferentes. A evidência precisa tornar esses caminhos comparáveis.
+4. **What's the next safe action?**
+   Advancing, pausing, reducing scope, applying mitigation, or running a rollback are different decisions. The evidence needs to make these paths comparable.
 
-O trade-off não é “mais dashboards versus menos dashboards”. É investir em sinais que reduzem incerteza antes que uma mudança aumente o *blast radius*.
+The trade-off isn't "more dashboards versus fewer dashboards." It's investing in signals that reduce uncertainty before a change grows its *blast radius*.
 
-## Evidência
+## Evidence
 
-Em uma arquitetura distribuída, os três sinais se complementam:
+In a distributed architecture, the three signals complement each other:
 
-- **Métricas** mostram que existe desvio e sua dimensão;
-- **Traces** mostram onde a experiência se degradou ao atravessar componentes;
-- **Logs** ajudam a explicar o evento concreto, desde que tenham contexto e correlação.
+- **Metrics** show that a deviation exists and its size;
+- **Traces** show where the experience degraded as it crossed components;
+- **Logs** help explain the concrete event, as long as they carry context and correlation.
 
-A utilidade aparece quando eles se conectam a uma decisão explícita.
+The usefulness shows up when they connect to an explicit decision.
 
-Por exemplo: uma elevação de latência após uma mudança não exige automaticamente rollback. Primeiro é preciso comparar a jornada afetada, a taxa de sucesso, a propagação para dependências e o consumo de orçamento de erro. Se o impacto é crescente, atinge usuários e ameaça o objetivo de confiabilidade, interromper a mudança deixa de ser uma reação subjetiva e se torna uma decisão defendível.
+For example: a latency increase after a change doesn't automatically call for a rollback. First you need to compare the affected journey, the success rate, the propagation to dependencies and the error-budget consumption. If the impact is growing, reaches users and threatens the reliability target, stopping the change stops being a subjective reaction and becomes a defensible decision.
 
-Essa é também a base para AIOps responsável: um modelo pode ajudar a correlacionar sinais e recomendar hipóteses, mas não substitui a política que define limites, responsáveis, critério de parada e saída segura.
+This is also the basis for responsible AIOps: a model can help correlate signals and suggest hypotheses, but it doesn't replace the policy that defines limits, owners, stop criteria and a safe way out.
 
-## Próximo passo seguro
+## Next safe step
 
-Antes de criar um novo dashboard, escolha uma mudança recorrente ou de risco conhecido e responda:
+Before building a new dashboard, pick a recurring change, or one with known risk, and answer:
 
-- qual sinal mostra impacto real no usuário;
-- qual alteração precisa aparecer na linha do tempo;
-- qual combinação de evidências interrompe o avanço;
-- e quem decide entre seguir, pausar ou voltar.
+- which signal shows real user impact;
+- which change needs to appear on the timeline;
+- which combination of evidence stops the rollout;
+- and who decides between proceeding, pausing or rolling back.
 
-Se essas respostas não existem, o problema não é falta de painel. É falta de um contrato operacional para decidir sob incerteza.
+If these answers don't exist, the problem isn't a missing panel. It's the lack of an operational contract for deciding under uncertainty.
 
 ---
 
-## Referências
+## References
 
 - [Google SRE Workbook — Monitoring Systems with Advanced Analytics](https://sre.google/workbook/monitoring/)
 - [Google SRE Workbook — Implementing SLOs](https://sre.google/workbook/implementing-slos/)
