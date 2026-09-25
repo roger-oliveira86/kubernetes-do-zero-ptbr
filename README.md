@@ -1,70 +1,68 @@
-# Kubernetes do Zero — PT-BR
+# Kubernetes From Scratch
 
-**Fundamentos de Linux, Kubernetes e Platform Engineering, escritos por quem opera plataforma em produção.**
-
-> **In English:** A Portuguese-language, hands-on track on Linux fundamentals, Kubernetes and Platform Engineering. The published chapters cover processes, networking, users and permissions — always ending in the Kubernetes behaviour they explain. Essays discuss platform decisions, reliability and observability. English articles: [dev.to/rogeroliveira86](https://dev.to/rogeroliveira86).
+**Linux, Kubernetes and Platform Engineering fundamentals, written by someone who runs platforms in production.**
 
 ---
 
-## A tese
+## The thesis
 
-Platform Engineering começa antes do Kubernetes. Pods, namespaces, limits e network policies são reembalagens de conceitos do Linux: processos, namespaces do kernel, cgroups, permissões e rede. Quem entende a camada de baixo investiga falhas por evidência, em vez de decorar comandos.
+Platform Engineering starts before Kubernetes. Pods, namespaces, limits and network policies are repackaged Linux concepts: processes, kernel namespaces, cgroups, permissions and networking. Whoever understands the layer underneath investigates failures with evidence, instead of memorizing commands.
 
-Por isso a trilha começa pelo sistema operacional e só depois sobe para o orquestrador:
+That's why this track starts with the operating system and only then climbs to the orchestrator:
 
-**Linux → processos → redes → containers → Kubernetes → observabilidade → SRE → Platform Engineering**
+**Linux → processes → networking → containers → Kubernetes → observability → SRE → Platform Engineering**
 
-## O que já está publicado
+## What's already published
 
-### Trilha — Linux para Platform Engineering
+### Track — Linux for Platform Engineering
 
-| # | Capítulo | O que você leva |
+| # | Chapter | What you take away |
 | --- | --- | --- |
-| 01 | [Distribuições e terminal](./00-linux-for-platform-engineering/01-distros-e-terminal/README.md) | Como inspecionar um sistema Linux desconhecido |
-| 02 | [Processos](./00-linux-for-platform-engineering/02-processos/README.md) | PID, PPID, estados e como investigar um processo |
-| 03 | [Redes e troubleshooting](./00-linux-for-platform-engineering/04-redes-e-troubleshooting/README.md) | Rotas, DNS, portas, sockets e as causas reais de um `connection refused` |
-| 04 | [Usuários e permissões](./00-linux-for-platform-engineering/03-usuarios-e-permissoes/README.md) | UID/GID, o `x` em diretório, `umask` e a tradução para `securityContext` |
-| 05 | [Sistema de arquivos e inodes](./00-linux-for-platform-engineering/05-sistema-de-arquivos-e-inodes/README.md) | Por que o disco "enche" com espaço livre: inodes, `lsof +L1` e `DiskPressure` |
+| 01 | [Distros and terminal](./00-linux-for-platform-engineering/01-distros-e-terminal/README.md) | How to inspect an unfamiliar Linux system |
+| 02 | [Processes](./00-linux-for-platform-engineering/02-processos/README.md) | PID, PPID, states and how to investigate a process |
+| 03 | [Networking and troubleshooting](./00-linux-for-platform-engineering/04-redes-e-troubleshooting/README.md) | Routes, DNS, ports, sockets and the real causes of a `connection refused` |
+| 04 | [Users and permissions](./00-linux-for-platform-engineering/03-usuarios-e-permissoes/README.md) | UID/GID, the `x` bit on directories, `umask` and how it maps to `securityContext` |
+| 05 | [Filesystems and inodes](./00-linux-for-platform-engineering/05-sistema-de-arquivos-e-inodes/README.md) | Why a disk can "fill up" with free space left: inodes, `lsof +L1` and `DiskPressure` |
 
-Índice completo da trilha: [Linux para Platform Engineering](./00-linux-for-platform-engineering/README.md).
+Full track index: [Linux for Platform Engineering](./00-linux-for-platform-engineering/README.md).
 
-### Ensaios — decisões de plataforma
+### Essays — platform decisions
 
-| Ensaio | Tema |
+| Essay | Topic |
 | --- | --- |
-| [Platform Engineering começa antes do Kubernetes](./ENSAIOS.md) | Quem é o cliente da plataforma, como ela falha e como se mede se ela ajuda |
-| [Observabilidade não é dashboard: é suporte à decisão](./artigos/ensaios/observabilidade-orientada-a-decisao.md) | Métricas, logs e traces como apoio para decidir o próximo passo seguro de uma mudança |
-| [Migração em ondas com critérios de avanço e rollback](./artigos/ensaios/migracao-em-ondas-observabilidade-para-decidir-com-seguranca.md) | Quando avançar, pausar ou reverter uma mudança progressiva, e com quais sinais |
-| [A ordem das ondas: o que cada etapa precisa ensinar](./artigos/ensaios/ordem-das-ondas-o-que-cada-etapa-precisa-ensinar.md) | Ordenar mudanças arriscadas pelo que cada etapa ensina à próxima, não pela facilidade |
+| [Platform Engineering starts before Kubernetes](./ENSAIOS.md) | Who the platform's customer is, how it fails, and how to measure whether it helps |
+| [Observability isn't a dashboard: it's decision support](./artigos/ensaios/observabilidade-orientada-a-decisao.md) | Metrics, logs and traces as support for deciding the next safe step of a change |
+| [Wave migration with go/rollback criteria](./artigos/ensaios/migracao-em-ondas-observabilidade-para-decidir-com-seguranca.md) | When to advance, pause or roll back a progressive change, and on which signals |
+| [The order of the waves: what each stage needs to teach](./artigos/ensaios/ordem-das-ondas-o-que-cada-etapa-precisa-ensinar.md) | Ordering risky changes by what each stage teaches the next, not by ease |
 
-Os ensaios usam exemplos sanitizados: nenhum sistema, dado ou incidente real é identificável.
+The essays use sanitized examples: no real system, data or incident is identifiable.
 
-## Em construção
+## In progress
 
-Os módulos de Kubernetes (workloads, arquitetura do cluster, networking, storage e troubleshooting) estão sendo escritos um de cada vez, sempre com laboratório reproduzível. O plano e a ordem estão no [ROADMAP](./ROADMAP.md); o ponto de partida é [Primeiros passos](./00-primeiros-passos/README.md).
+The Kubernetes modules (workloads, cluster architecture, networking, storage and troubleshooting) are being written one at a time, always with a reproducible lab. The plan and order live in the [ROADMAP](./ROADMAP.md); the starting point is [First steps](./00-primeiros-passos/README.md).
 
-## Como estudar
+## How to study
 
-1. Leia o capítulo e execute os comandos numa VM ou ambiente descartável.
-2. Anote o que observou antes de seguir para o próximo.
-3. Compare com a documentação oficial.
-4. Nunca rode comandos de alteração em produção sem entender o efeito e ter uma saída segura.
+1. Read the chapter and run the commands in a VM or a disposable environment.
+2. Write down what you observed before moving to the next one.
+3. Compare against the official documentation.
+4. Never run mutating commands in production without understanding the effect and having a safe way out.
 
-## Fontes principais
+## Main sources
 
-- [Documentação oficial do Kubernetes](https://kubernetes.io/docs/)
-- [man-pages do Linux](https://man7.org/linux/man-pages/)
+- [Official Kubernetes documentation](https://kubernetes.io/docs/)
+- [Linux man-pages](https://man7.org/linux/man-pages/)
 
-## Contribuições
+## Contributing
 
-Sugestões e correções são bem-vindas. Leia o [CONTRIBUTING.md](./CONTRIBUTING.md) antes de abrir uma issue ou pull request.
+Suggestions and corrections are welcome. Read [CONTRIBUTING.md](./CONTRIBUTING.md) before opening an issue or pull request.
 
-## Licença
+## License
 
 [Apache License 2.0](./LICENSE).
 
-## Autor
+## Author
 
-**Roger Oliveira** — Engenharia de Plataforma, SRE, Kubernetes e Observabilidade. Mais de 12 anos em infraestrutura, com liderança técnica de migrações de plataforma em ambiente regulado.
+**Roger Oliveira** — Platform Engineering, SRE, Kubernetes and Observability. 12+ years in infrastructure, with technical leadership of platform migrations in a regulated environment.
 
-[LinkedIn](https://www.linkedin.com/in/oliveiraroger/) · [DEV.to (English)](https://dev.to/rogeroliveira86)
+[LinkedIn](https://www.linkedin.com/in/oliveiraroger/) · [DEV.to](https://dev.to/rogeroliveira86)
