@@ -1,154 +1,154 @@
-# Laboratório 01 — Primeiros comandos com kubectl
+# Lab 01 — First commands with kubectl
 
-Neste laboratório, você verificará o cluster, criará um Pod e usará os primeiros comandos de diagnóstico do Kubernetes.
+In this lab, you'll check the cluster, create a Pod, and use the first Kubernetes diagnostic commands.
 
-## Objetivos
+## Objectives
 
-Ao concluir, você saberá:
+By the end, you'll know how to:
 
-- verificar os nodes e namespaces do cluster;
-- criar um Pod a partir de um manifesto YAML;
-- consultar o estado do Pod;
-- inspecionar eventos e detalhes;
-- consultar logs;
-- remover o recurso criado.
+- check the cluster's nodes and namespaces;
+- create a Pod from a YAML manifest;
+- check the Pod's state;
+- inspect events and details;
+- check logs;
+- remove the created resource.
 
-## Pré-requisitos
+## Prerequisites
 
-- acesso a um cluster Kubernetes;
-- `kubectl` instalado e conectado ao cluster;
-- terminal aberto nesta pasta.
+- access to a Kubernetes cluster;
+- `kubectl` installed and connected to the cluster;
+- a terminal open in this folder.
 
-Você também pode usar um ambiente de laboratório no navegador, como o Killercoda.
+You can also use a browser-based lab environment, such as Killercoda.
 
-## 1. Verifique a conexão com o cluster
+## 1. Check the connection to the cluster
 
 ```bash
 kubectl cluster-info
 ```
 
-O resultado deve mostrar os endereços do control plane e dos serviços principais.
+The result should show the addresses of the control plane and the main services.
 
-## 2. Liste os nodes
+## 2. List the nodes
 
 ```bash
 kubectl get nodes
 ```
 
-Resultado esperado: pelo menos um node com o estado `Ready`.
+Expected result: at least one node in the `Ready` state.
 
-## 3. Liste os namespaces
+## 3. List the namespaces
 
 ```bash
 kubectl get namespaces
 ```
 
-Você deve encontrar namespaces como `default`, `kube-system` e `kube-public`.
+You should find namespaces like `default`, `kube-system` and `kube-public`.
 
-## 4. Crie o primeiro Pod
+## 4. Create the first Pod
 
 ```bash
 kubectl apply -f pod.yaml
 ```
 
-Resultado esperado:
+Expected result:
 
 ```text
-pod/primeiro-pod created
+pod/first-pod created
 ```
 
-## 5. Acompanhe o estado do Pod
+## 5. Track the Pod's state
 
 ```bash
 kubectl get pods
 ```
 
-Se a imagem ainda estiver sendo baixada, o estado pode aparecer temporariamente como `ContainerCreating`. Aguarde alguns segundos e execute o comando novamente. O estado final esperado é `Running`.
+If the image is still being pulled, the state may temporarily show as `ContainerCreating`. Wait a few seconds and run the command again. The expected final state is `Running`.
 
-Para acompanhar a mudança em tempo real, use:
+To follow the change in real time, use:
 
 ```bash
 kubectl get pods --watch
 ```
 
-Pressione `Ctrl+C` para encerrar o acompanhamento.
+Press `Ctrl+C` to stop watching.
 
-## 6. Inspecione o Pod
+## 6. Inspect the Pod
 
 ```bash
-kubectl describe pod primeiro-pod
+kubectl describe pod first-pod
 ```
 
-Observe especialmente:
+Pay special attention to:
 
 - `Status`;
 - `Containers`;
 - `Conditions`;
-- `Events`, no final da saída.
+- `Events`, at the end of the output.
 
-Os eventos ajudam a entender problemas de agendamento, download de imagens e inicialização de containers.
+The events help you understand scheduling problems, image pulls and container startup.
 
-## 7. Consulte os logs
+## 7. Check the logs
 
 ```bash
-kubectl logs primeiro-pod
+kubectl logs first-pod
 ```
 
-Resultado esperado:
+Expected result:
 
 ```text
-O primeiro Pod esta funcionando.
+The first Pod is working.
 ```
 
-Para acompanhar novas mensagens:
+To follow new messages:
 
 ```bash
-kubectl logs -f primeiro-pod
+kubectl logs -f first-pod
 ```
 
-Pressione `Ctrl+C` para sair.
+Press `Ctrl+C` to exit.
 
-## 8. Faça uma consulta usando labels
+## 8. Query using labels
 
 ```bash
-kubectl get pods -l app=primeiro-pod
+kubectl get pods -l app=first-pod
 ```
 
-O Kubernetes retornará somente os Pods que possuem a label `app=primeiro-pod`.
+Kubernetes will return only the Pods that have the label `app=first-pod`.
 
-## 9. Limpe o ambiente
+## 9. Clean up the environment
 
 ```bash
 kubectl delete -f pod.yaml
 ```
 
-Resultado esperado:
+Expected result:
 
 ```text
-pod "primeiro-pod" deleted
+pod "first-pod" deleted
 ```
 
-Confirme a remoção:
+Confirm the removal:
 
 ```bash
 kubectl get pods
 ```
 
-## Desafio opcional
+## Optional challenge
 
-Altere a mensagem no arquivo `pod.yaml`, aplique novamente o manifesto e confira os novos logs. Como o campo `command` do Pod não pode ser alterado diretamente, remova o Pod antes de recriá-lo:
+Change the message in the `pod.yaml` file, apply the manifest again, and check the new logs. Since the Pod's `command` field can't be changed directly, remove the Pod before recreating it:
 
 ```bash
 kubectl delete -f pod.yaml
 kubectl apply -f pod.yaml
-kubectl logs primeiro-pod
+kubectl logs first-pod
 ```
 
 ## Checklist
 
-- [ ] O cluster respondeu ao `kubectl cluster-info`.
-- [ ] Pelo menos um node apareceu como `Ready`.
-- [ ] O Pod chegou ao estado `Running`.
-- [ ] O comando `describe` mostrou detalhes e eventos.
-- [ ] O comando `logs` exibiu a mensagem da aplicação.
-- [ ] O Pod foi removido ao final.
+- [ ] The cluster responded to `kubectl cluster-info`.
+- [ ] At least one node showed up as `Ready`.
+- [ ] The Pod reached the `Running` state.
+- [ ] The `describe` command showed details and events.
+- [ ] The `logs` command displayed the application's message.
+- [ ] The Pod was removed at the end.

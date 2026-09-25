@@ -1,4 +1,3 @@
-# Módulo 03 - Serviços e networking
+# Module 03 - Services and networking
 
-Conteúdo planejado: conectividade, Services, endpoints, Network Policies, Ingress, Gateway API e CoreDNS.
-
+Planned content: connectivity, Services, endpoints, Network Policies, Ingress, Gateway API and CoreDNS.

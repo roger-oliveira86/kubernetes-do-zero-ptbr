@@ -1,21 +1,20 @@
-# Módulo 00 - Primeiros passos
+# Module 00 - First steps
 
-## O porto automatizado
+## The automated port
 
-Imagine um porto que recebe contêineres, decide em quais navios eles serão transportados, substitui unidades com problemas e aumenta a capacidade quando a demanda cresce.
+Imagine a port that receives containers, decides which ships they'll be shipped on, replaces units with problems, and increases capacity as demand grows.
 
-Kubernetes exerce um papel semelhante para aplicações em contêineres: declara-se o estado desejado e o sistema trabalha continuamente para aproximar o ambiente desse estado.
+Kubernetes plays a similar role for containerized applications: you declare the desired state, and the system works continuously to bring the environment closer to that state.
 
-## Objetivos
+## Objectives
 
-Ao final deste módulo, você deverá conseguir explicar:
+By the end of this module, you should be able to explain:
 
-- O problema que Kubernetes procura resolver.
-- A diferença entre container, Pod, Node e cluster.
-- O conceito de estado desejado e reconciliação.
-- Por que Kubernetes não elimina a necessidade de entender aplicações e infraestrutura.
+- The problem Kubernetes tries to solve.
+- The difference between container, Pod, Node and cluster.
+- The concept of desired state and reconciliation.
+- Why Kubernetes doesn't eliminate the need to understand applications and infrastructure.
 
-## Próximo passo
+## Next step
 
-O primeiro laboratório será executado em ambiente de navegador e apresentará os comandos básicos de inspeção do cluster.
-
+The first lab will run in a browser environment and will introduce the basic cluster inspection commands.

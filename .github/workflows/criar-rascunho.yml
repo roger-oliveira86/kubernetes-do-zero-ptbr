@@ -1,18 +1,18 @@
-name: Criar rascunho editorial
+name: Create editorial draft
 
 on:
   workflow_dispatch:
     inputs:
       slug:
-        description: "Identificador do arquivo (ex.: observabilidade-orientada-a-decisao)"
+        description: "File identifier (e.g.: observabilidade-orientada-a-decisao)"
         required: true
         type: string
       titulo:
-        description: "Título do rascunho"
+        description: "Draft title"
         required: true
         type: string
       tema:
-        description: "Tema ou pergunta central"
+        description: "Topic or central question"
         required: true
         type: string
 
@@ -22,30 +22,30 @@ permissions:
 
 jobs:
   criar-rascunho:
-    name: Criar rascunho e Pull Request
+    name: Create draft and Pull Request
     runs-on: ubuntu-latest
 
     steps:
-      - name: Baixar repositório
+      - name: Check out repository
         uses: actions/checkout@v5
 
-      - name: Validar entradas
+      - name: Validate inputs
         env:
           SLUG: ${{ inputs.slug }}
           TITULO: ${{ inputs.titulo }}
           TEMA: ${{ inputs.tema }}
         run: |
           if ! [[ "$SLUG" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
-            echo "O slug deve conter apenas letras minúsculas, números e hífens."
+            echo "The slug must contain only lowercase letters, numbers and hyphens."
             exit 1
           fi
 
           if [[ -z "$TITULO" || -z "$TEMA" ]]; then
-            echo "Título e tema são obrigatórios."
+            echo "Title and topic are required."
             exit 1
           fi
 
-      - name: Criar branch e arquivo Markdown
+      - name: Create branch and Markdown file
         env:
           SLUG: ${{ inputs.slug }}
           TITULO: ${{ inputs.titulo }}
@@ -58,7 +58,7 @@ jobs:
           git checkout -b "$BRANCH"
 
           if [[ -e "$ARQUIVO" ]]; then
-            echo "Já existe um rascunho com este slug: $ARQUIVO"
+            echo "A draft with this slug already exists: $ARQUIVO"
             exit 1
           fi
 
@@ -71,17 +71,17 @@ jobs:
             printf 'tema: "%s"\n' "$TEMA"
             printf '%s\n\n' "---"
             printf '# %s\n\n' "$TITULO"
-            printf '%s\n\n' "> Rascunho criado por workflow. Revisar tecnicamente, sanitizar exemplos e validar antes de publicar."
-            printf '%s\n\n' "## Tese"
-            printf '%s\n\n' "Qual é a ideia principal que este texto defende?"
-            printf '%s\n\n' "## Contexto"
-            printf '%s\n\n' "Qual problema de plataforma, confiabilidade ou operação torna essa discussão relevante?"
-            printf '%s\n\n' "## Decisão ou trade-off"
-            printf '%s\n\n' "Que decisão precisa ser tomada? Quais riscos, alternativas e sinais sustentam essa escolha?"
-            printf '%s\n\n' "## Evidência"
-            printf '%s\n\n' "Inclua somente fatos verificáveis e exemplos sanitizados."
-            printf '%s\n\n' "## Próximo passo seguro"
-            printf '%s\n\n' "Qual ação prática o leitor pode tomar sem ampliar risco desnecessariamente?"
+            printf '%s\n\n' "> Draft created by workflow. Review technically, sanitize examples, and validate before publishing."
+            printf '%s\n\n' "## Thesis"
+            printf '%s\n\n' "What's the main idea this text argues for?"
+            printf '%s\n\n' "## Context"
+            printf '%s\n\n' "What platform, reliability, or operations problem makes this discussion relevant?"
+            printf '%s\n\n' "## Decision or trade-off"
+            printf '%s\n\n' "What decision needs to be made? What risks, alternatives, and signals support this choice?"
+            printf '%s\n\n' "## Evidence"
+            printf '%s\n\n' "Include only verifiable facts and sanitized examples."
+            printf '%s\n\n' "## Next safe step"
+            printf '%s\n\n' "What practical action can the reader take without adding unnecessary risk?"
           } > "$ARQUIVO"
 
           git config user.name "github-actions[bot]"
@@ -93,7 +93,7 @@ jobs:
           echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
           echo "ARQUIVO=$ARQUIVO" >> "$GITHUB_ENV"
 
-      - name: Abrir Pull Request
+      - name: Open Pull Request
         env:
           GH_TOKEN: ${{ github.token }}
           TITULO: ${{ inputs.titulo }}
@@ -102,14 +102,14 @@ jobs:
           gh pr create \
             --base main \
             --head "$BRANCH" \
-            --title "docs: rascunho — $TITULO" \
-            --body "## Rascunho editorial
+            --title "docs: draft — $TITULO" \
+            --body "## Editorial draft
 
-          **Tema:** $TEMA
+          **Topic:** $TEMA
 
-          Este PR foi criado pelo workflow. Não faça merge enquanto o arquivo ainda estiver em `artigos/rascunhos/`; antes, promova o conteúdo aprovado para `artigos/ensaios/` conforme o índice editorial.
+          This PR was created by the workflow. Don't merge while the file is still in \`artigos/rascunhos/\`; first, promote the approved content to \`artigos/ensaios/\` per the editorial index.
 
-          - [ ] Revisão técnica
-          - [ ] Sanitização de exemplos
-          - [ ] Revisão editorial
-          - [ ] Decisão explícita de publicação"
+          - [ ] Technical review
+          - [ ] Example sanitization
+          - [ ] Editorial review
+          - [ ] Explicit publication decision"

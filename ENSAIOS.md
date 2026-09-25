@@ -1,41 +1,41 @@
-# Ensaios
+# Essays
 
-Textos de opinião e reflexão sobre carreira, Platform Engineering e engenharia de infraestrutura — conectados com a trilha técnica deste repositório, mas fora da numeração de módulos (00–05), que segue o roadmap da trilha.
-
----
-
-## Platform Engineering começa antes do Kubernetes
-
-*Por que a pergunta certa não é "por onde eu começo o Kubernetes", e sim "qual problema estou resolvendo".*
-
-### A afirmação que costuma incomodar
-
-Toda vez que alguém me pergunta "por onde eu começo para virar Platform Engineer", a resposta que a pessoa espera é "Kubernetes". A resposta que eu dou é: não. Kubernetes é a ferramenta que você usa depois de já saber o que está tentando resolver. Platform Engineering é sobre o problema, não sobre o orquestrador.
-
-### O que realmente separa quem "sabe Kubernetes" de quem faz Platform Engineering
-
-Depois de anos administrando e evoluindo plataformas Kubernetes em produção — com centenas de workloads e milhares de pods rodando em ambiente corporativo regulado —, a diferença que eu vejo na prática não está no `kubectl`. Está em três perguntas que a maioria dos tutoriais nunca faz você se perguntar:
-
-1. **Quem é o cliente da sua plataforma?** Não é o cluster. É o time de desenvolvimento que precisa fazer deploy sem te chamar toda vez. Se você não sabe nomear quem usa o que você constrói, você está operando infraestrutura, não construindo plataforma.
-2. **O que acontece quando algo quebra às 3h da manhã?** Rollback testado, RTO definido, dono do incidente claro — isso é decisão de design, tomada muito antes de qualquer manifest YAML existir. Plataforma que não foi desenhada para falhar bem, falha mal.
-3. **Como você mede se a plataforma está ajudando ou atrapalhando?** Se a resposta for "não sei", você tem um cluster, não uma plataforma. Capacity planning, indicadores de adoção, redução de retrabalho entre times — isso é o que transforma operação em produto interno.
-
-### Onde o Linux entra nisso
-
-Essa é a conexão que a trilha "Linux do Zero" está construindo desde o primeiro post: cada abstração que o Kubernetes te oferece — pods, namespaces, resource limits, network policies — é uma reembalagem elegante de conceitos que já existem no Linux puro: processos, namespaces do kernel, cgroups, iptables/nftables. Quando você entende o processo antes do pod, o namespace do kernel antes do namespace do Kubernetes, você para de tratar o cluster como uma caixa-preta mágica e começa a debugar como quem entende o motor, não só o painel.
-
-Não é coincidência que os piores incidentes em produção que já resolvi tinham a causa raiz em uma camada abaixo do Kubernetes — I/O de disco, DNS, limites de kernel — e não no orquestrador em si. Quem só sabe operar o Kubernetes fica cego exatamente onde o problema mora.
-
-### O caminho que eu defendo (e que essa trilha segue)
-
-Linux → processos → redes → containers → Docker → containerd → Kubernetes → observabilidade → SRE → Platform Engineering → arquitetura.
-
-Não é ordem por acaso. É a ordem que te dá terreno sólido antes de te dar altura. Cada camada explica a de cima. Pular direto para "Kubernetes do zero" é como aprender a pilotar avião sem entender o que faz ele voar — você consegue decorar os comandos dos controles, mas não consegue diagnosticar quando algo sai do script.
-
-### Onde isso te leva na prática
-
-Se você está tentando evoluir de operação para Platform Engineering — ou de Platform Engineer para Staff/Principal — o teste real não é "quantos manifests YAML você já escreveu". É: você consegue explicar, em uma frase, para um executivo não técnico, por que a plataforma que você constrói reduz risco e acelera entrega? Se sim, você já está pensando como Platform Engineer. Kubernetes é só a ferramenta que você escolheu para executar essa visão hoje — amanhã pode ser outra.
+Opinion and reflection pieces on career, Platform Engineering and infrastructure engineering — connected to this repository's technical track, but outside the module numbering (00–05), which follows the track's roadmap.
 
 ---
 
-*Versão completa também publicada no [Medium](https://medium.com/@rogeroliveira86) e no [DEV.to](https://dev.to/rogeroliveira86). Trilha técnica: veja [`00-linux-for-platform-engineering`](./00-linux-for-platform-engineering) em diante.*
+## Platform Engineering starts before Kubernetes
+
+*Why the right question isn't "where do I start with Kubernetes," but "what problem am I solving."*
+
+### The statement that tends to ruffle feathers
+
+Every time someone asks me "where do I start to become a Platform Engineer," the answer they expect is "Kubernetes." The answer I give is: no. Kubernetes is the tool you use after you already know what you're trying to solve. Platform Engineering is about the problem, not about the orchestrator.
+
+### What actually separates someone who "knows Kubernetes" from someone doing Platform Engineering
+
+After years running and evolving Kubernetes platforms in production — with hundreds of workloads and thousands of pods running in a regulated corporate environment — the difference I see in practice isn't in `kubectl`. It's in three questions most tutorials never make you ask yourself:
+
+1. **Who is your platform's customer?** It's not the cluster. It's the development team that needs to deploy without calling you every time. If you can't name who uses what you build, you're operating infrastructure, not building a platform.
+2. **What happens when something breaks at 3am?** A tested rollback, a defined RTO, a clear incident owner — that's a design decision, made long before any YAML manifest exists. A platform that wasn't designed to fail well, fails badly.
+3. **How do you measure whether the platform is helping or getting in the way?** If the answer is "I don't know," you have a cluster, not a platform. Capacity planning, adoption metrics, reduced rework across teams — that's what turns operations into an internal product.
+
+### Where Linux fits into this
+
+This is the connection the "Linux From Scratch" track has been building since the first post: every abstraction Kubernetes offers you — pods, namespaces, resource limits, network policies — is an elegant repackaging of concepts that already exist in plain Linux: processes, kernel namespaces, cgroups, iptables/nftables. When you understand the process before the pod, the kernel namespace before the Kubernetes namespace, you stop treating the cluster as a magic black box and start debugging like someone who understands the engine, not just the dashboard.
+
+It's no coincidence that the worst production incidents I've ever resolved had their root cause one layer below Kubernetes — disk I/O, DNS, kernel limits — and not in the orchestrator itself. Someone who only knows how to operate Kubernetes goes blind exactly where the problem lives.
+
+### The path I advocate for (and that this track follows)
+
+Linux → processes → networking → containers → Docker → containerd → Kubernetes → observability → SRE → Platform Engineering → architecture.
+
+This order isn't an accident. It's the order that gives you solid ground before it gives you height. Each layer explains the one above it. Jumping straight to "Kubernetes from scratch" is like learning to fly a plane without understanding what makes it fly — you can memorize the control commands, but you can't diagnose when something goes off script.
+
+### Where this takes you in practice
+
+If you're trying to evolve from operations to Platform Engineering — or from Platform Engineer to Staff/Principal — the real test isn't "how many YAML manifests have you written." It's: can you explain, in one sentence, to a non-technical executive, why the platform you build reduces risk and speeds up delivery? If yes, you're already thinking like a Platform Engineer. Kubernetes is just the tool you chose to execute that vision today — tomorrow it might be something else.
+
+---
+
+*Full version also published on [Medium](https://medium.com/@rogeroliveira86) and [DEV.to](https://dev.to/rogeroliveira86). Technical track: see [`00-linux-for-platform-engineering`](./00-linux-for-platform-engineering) onward.*

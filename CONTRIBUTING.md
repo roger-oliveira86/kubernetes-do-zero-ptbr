@@ -1,23 +1,22 @@
-# Como contribuir
+# How to contribute
 
-Obrigado por contribuir com o Kubernetes do Zero - PT-BR.
+Thank you for contributing to Kubernetes From Scratch.
 
-## Antes de enviar
+## Before submitting
 
-- Não inclua informações confidenciais ou dados de ambientes reais.
-- Teste manifestos e comandos antes do envio.
-- Informe a versão do Kubernetes utilizada.
-- Prefira links para documentação oficial.
-- Diferencie resultados observados, exemplos e metas.
+- Don't include confidential information or data from real environments.
+- Test manifests and commands before submitting.
+- State the Kubernetes version used.
+- Prefer links to official documentation.
+- Distinguish observed results, examples and goals.
 
 ## Issues
 
-Use issues para relatar erros, sugerir módulos ou propor melhorias. Inclua contexto, resultado esperado e versão utilizada.
+Use issues to report errors, suggest modules, or propose improvements. Include context, expected result and version used.
 
 ## Pull requests
 
-- Faça mudanças pequenas e focadas.
-- Explique o problema e a solução.
-- Liste como o conteúdo foi validado.
-- Atualize links e documentação relacionados.
-
+- Make small, focused changes.
+- Explain the problem and the solution.
+- List how the content was validated.
+- Update related links and documentation.

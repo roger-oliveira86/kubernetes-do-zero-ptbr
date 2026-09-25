@@ -1,4 +1,3 @@
-# Módulo 02 - Arquitetura do cluster
+# Module 02 - Cluster architecture
 
-Conteúdo planejado: control plane, nodes, kubeadm, RBAC, ciclo de vida, Helm, Kustomize e extensões.
-
+Planned content: control plane, nodes, kubeadm, RBAC, lifecycle, Helm, Kustomize and extensions.
