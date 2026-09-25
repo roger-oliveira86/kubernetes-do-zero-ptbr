@@ -1,6 +1,16 @@
+<div align="center">
+
 # Kubernetes From Scratch
 
 **Linux, Kubernetes and Platform Engineering fundamentals, written by someone who runs platforms in production.**
+
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=flat-square)](./LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/roger-oliveira86/kubernetes-do-zero-ptbr?style=flat-square)](https://github.com/roger-oliveira86/kubernetes-do-zero-ptbr/commits/main)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=flat-square&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
+[![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black)](https://kernel.org/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](./CONTRIBUTING.md)
+
+</div>
 
 ---
 
@@ -11,6 +21,15 @@ Platform Engineering starts before Kubernetes. Pods, namespaces, limits and netw
 That's why this track starts with the operating system and only then climbs to the orchestrator:
 
 **Linux → processes → networking → containers → Kubernetes → observability → SRE → Platform Engineering**
+
+## Contents
+
+- [What's already published](#whats-already-published)
+- [In progress](#in-progress)
+- [How to study](#how-to-study)
+- [Main sources](#main-sources)
+- [Contributing](#contributing)
+- [Author](#author)
 
 ## What's already published
 
