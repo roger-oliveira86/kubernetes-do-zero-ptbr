@@ -1,87 +1,87 @@
-# 05 — Sistema de arquivos e inodes
+# 05 — Filesystems and Inodes
 
-> Parte da trilha **Linux do Zero** (peça #5: *Sistema de arquivos e inodes*).
-> Artigo completo: [DEV.to](https://dev.to/rogeroliveira86/-linux-from-zero-inodes-and-the-filesystem-limit-df-h-doesnt-show-for-platform-engineers-4jml)
+> Part of the **Linux From Scratch** track (piece #5: *Filesystems and inodes*).
+> Full article: [DEV.to](https://dev.to/rogeroliveira86/-linux-from-zero-inodes-and-the-filesystem-limit-df-h-doesnt-show-for-platform-engineers-4jml)
 
-## Objetivo
+## Objective
 
-Entender por que um disco pode estar "cheio" com espaço em bytes sobrando — e como esse mesmo limite, quando ignorado, vira `DiskPressure` num nó do Kubernetes.
+Understand why a disk can be "full" with bytes of free space left over — and how that same limit, when ignored, turns into `DiskPressure` on a Kubernetes node.
 
-Pré-requisito: terminal básico (peça #1) e usuários/permissões (peça #4) desta trilha.
+Prerequisite: basic terminal (piece #1) and users/permissions (piece #4) from this track.
 
-## Estrutura deste laboratório
+## Structure of this lab
 
 ```text
 05-sistema-de-arquivos-e-inodes/
-└── README.md   # este arquivo
+└── README.md   # this file
 ```
 
-## 1. O problema que `df -h` não mostra
+## 1. The problem `df -h` doesn't show
 
-Todo mundo aprende que `df -h` mostra o espaço em disco. Poucos aprendem que existe um segundo limite, independente do espaço em bytes: o número de **inodes**. Um sistema de arquivos reserva, na criação, uma quantidade fixa de inodes — e cada arquivo, por menor que seja, consome exatamente um. Um diretório com milhões de arquivos pequenos (logs, sessões, cache) pode esgotar os inodes com o disco ainda mostrando gigabytes livres.
+Everyone learns that `df -h` shows disk space. Few learn that there's a second limit, independent of space in bytes: the number of **inodes**. A filesystem reserves a fixed number of inodes at creation time — and every file, no matter how small, consumes exactly one. A directory with millions of small files (logs, sessions, cache) can exhaust inodes while the disk still shows gigabytes free.
 
-O sintoma clássico: `No space left on device` ao tentar criar um arquivo, enquanto `df -h` diz que sobram dezenas de gigabytes.
+The classic symptom: `No space left on device` when trying to create a file, while `df -h` says dozens of gigabytes are still available.
 
-## 2. O que um inode guarda de fato
+## 2. What an inode actually holds
 
-Um inode não guarda o nome do arquivo. Ele guarda os metadados: dono, permissões, timestamps, tamanho e os ponteiros para os blocos de dados no disco. O nome do arquivo vive só na entrada do diretório, que aponta para um número de inode. É por isso que renomear um arquivo é instantâneo (só muda a entrada do diretório), e por isso que um `hard link` é, na prática, dois nomes apontando para o mesmo inode.
+An inode doesn't hold the file's name. It holds the metadata: owner, permissions, timestamps, size and the pointers to the data blocks on disk. The file's name only lives in the directory entry, which points to an inode number. That's why renaming a file is instant (it only changes the directory entry), and why a `hard link` is, in practice, two names pointing at the same inode.
 
 ```bash
 ls -i /etc/hostname
 ```
 
-**Exercício:** rode o comando acima e anote o número. Crie um hard link (`ln /etc/hostname /tmp/hostname-link`) e rode `ls -i` nos dois — o número deve ser idêntico.
+**Exercise:** run the command above and note the number. Create a hard link (`ln /etc/hostname /tmp/hostname-link`) and run `ls -i` on both — the number should be identical.
 
-## 3. Vendo o limite de inodes
+## 3. Seeing the inode limit
 
 ```bash
 df -i /
 ```
 
-Se `IUse%` estiver perto de 100% enquanto `df -h` mostra espaço livre, o problema é inode, não byte.
+If `IUse%` is close to 100% while `df -h` shows free space, the problem is inodes, not bytes.
 
-**Exercício:** compare a saída de `df -h /` e `df -i /` na sua máquina. Depois, crie 200 mil arquivos vazios num diretório de teste (`for i in $(seq 1 200000); do touch /tmp/teste/f$i; done`) e observe o `df -i` mudar enquanto o `df -h` mal se move. Não esqueça de limpar o diretório depois.
+**Exercise:** compare the output of `df -h /` and `df -i /` on your machine. Then create 200,000 empty files in a test directory (`for i in $(seq 1 200000); do touch /tmp/test/f$i; done`) and watch `df -i` change while `df -h` barely moves. Don't forget to clean up the directory afterward.
 
-## 4. Achando quem consome os inodes
+## 4. Finding who's consuming the inodes
 
 ```bash
 for dir in /var/log /var/cache /tmp; do
-  echo "$dir: $(find "$dir" -xdev | wc -l) arquivos"
+  echo "$dir: $(find "$dir" -xdev | wc -l) files"
 done
 ```
 
-Em produção, os suspeitos de sempre são: diretórios de sessão de aplicações web, filas de e-mail mortas e logs rotacionados sem limite de retenção.
+In production, the usual suspects are: web application session directories, dead mail queues, and rotated logs with no retention limit.
 
-## 5. `lsof +L1` — o outro jeito de sumir com espaço
+## 5. `lsof +L1` — the other way to lose space
 
-Existe uma segunda forma clássica de "disco cheio com espaço livre": um processo mantém aberto um arquivo que já foi deletado. O `unlink` remove a entrada do diretório, mas o inode só é liberado quando o último processo fecha o descritor. Enquanto isso, o espaço não aparece em `du`, mas também não volta para o `df`.
+There's a second classic form of "disk full with free space left": a process keeps a deleted file open. `unlink` removes the directory entry, but the inode is only freed once the last process closes the descriptor. In the meantime, the space doesn't show up in `du`, but it doesn't come back to `df` either.
 
 ```bash
 lsof +L1
 ```
 
-Uma linha com `NLINK 0` é o alerta: zero links no diretório, mas o arquivo ainda ocupa espaço porque algum processo o mantém aberto. A correção não é apagar de novo — já não existe entrada para apagar — é reiniciar ou sinalizar o processo para que feche e reabra o arquivo (`logrotate` com `copytruncate`, ou um `kill -HUP`).
+A line with `NLINK 0` is the alert: zero links in the directory, but the file still occupies space because some process is keeping it open. The fix isn't to delete it again — there's no longer an entry to delete — it's to restart or signal the process so it closes and reopens the file (`logrotate` with `copytruncate`, or a `kill -HUP`).
 
-**Exercício:** num terminal, abra um arquivo com `tail -f arquivo.log`; em outro terminal, apague o arquivo (`rm arquivo.log`); rode `lsof +L1` e observe a linha com `NLINK 0` enquanto o primeiro terminal ainda o mantém aberto.
+**Exercise:** in one terminal, open a file with `tail -f file.log`; in another terminal, delete the file (`rm file.log`); run `lsof +L1` and watch the line with `NLINK 0` while the first terminal still keeps it open.
 
-## 6. A conexão com o Kubernetes: `DiskPressure`
+## 6. The connection to Kubernetes: `DiskPressure`
 
-O kubelet monitora o disco do nó em dois eixos, não um: bytes livres e inodes livres. Quando qualquer um dos dois cruza o limite configurado (`nodefs.inodesFree`, por padrão perto de 5%), o kubelet marca o nó com a condição `DiskPressure` e começa a despejar (`evict`) pods para liberar espaço — começando pelos de menor prioridade, depois os que mais consomem em `emptyDir` e em logs de container.
+The kubelet monitors the node's disk on two axes, not one: free bytes and free inodes. When either one crosses the configured threshold (`nodefs.inodesFree`, around 5% by default), the kubelet marks the node with the `DiskPressure` condition and starts evicting pods to free up space — starting with the lowest-priority ones, then the ones consuming the most in `emptyDir` and container logs.
 
 ```bash
-kubectl describe node <nome-do-no> | grep -A2 DiskPressure
+kubectl describe node <node-name> | grep -A2 DiskPressure
 ```
 
-Um nó pode estar com `DiskPressure=True` e `df -h` "normal" ao mesmo tempo, se a causa for inodes esgotados por uma aplicação que gera muitos arquivos pequenos em `/var/lib/containerd` ou no volume de logs. Investigar sem saber disso leva à conclusão errada ("tem espaço, não é disco"), e a causa raiz nunca é encontrada.
+A node can be `DiskPressure=True` and show a "normal" `df -h` at the same time, if the cause is inodes exhausted by an application generating lots of small files in `/var/lib/containerd` or in the logs volume. Investigating without knowing this leads to the wrong conclusion ("there's space, it's not disk"), and the root cause is never found.
 
-## Checklist de investigação
+## Investigation checklist
 
-1. Rode `df -h` **e** `df -i` sempre juntos — nunca um sem o outro.
-2. Se o volume tem muitos arquivos pequenos e efêmeros, pergunte se ele deveria ter mais inodes reservados, ou se a aplicação deveria limpar depois de si.
-3. Em produção, monitore `node_filesystem_files_free` (Prometheus/node_exporter) com o mesmo alerta que já existe para bytes livres.
+1. Run `df -h` **and** `df -i` together, always — never one without the other.
+2. If the volume has lots of small, short-lived files, ask whether it should have more inodes reserved, or whether the application should clean up after itself.
+3. In production, monitor `node_filesystem_files_free` (Prometheus/node_exporter) with the same alert that already exists for free bytes.
 
-Os exemplos são educacionais. Confirme comportamento, versão e permissões no ambiente em que forem executados.
+The examples are educational. Confirm behavior, version and permissions in the environment where they'll run.
 
 ---
 
-*Série Linux do Zero — [Roger Oliveira](https://www.linkedin.com/in/oliveiraroger/). Repositório: [kubernetes-do-zero-ptbr](https://github.com/roger-oliveira86/kubernetes-do-zero-ptbr).*
+*Linux From Scratch series — [Roger Oliveira](https://www.linkedin.com/in/oliveiraroger/). Repository: [kubernetes-do-zero-ptbr](https://github.com/roger-oliveira86/kubernetes-do-zero-ptbr).*
