@@ -1,8 +1,28 @@
+<div align="center">
+
 # Linux for Platform Engineering
 
-This track builds the fundamentals that reappear in containers, Kubernetes, observability and troubleshooting.
+**The track that builds the fundamentals reappearing in containers, Kubernetes, observability and troubleshooting.**
+
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=flat-square)](../LICENSE)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=flat-square&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
+[![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black)](https://kernel.org/)
+
+[← Back to main README](../README.md)
+
+</div>
+
+---
 
 The conceptual order is: **Linux → processes → networking → containers → Kubernetes → observability → SRE → Platform Engineering**. Folder names preserve the material's evolution; use this index as the entry point.
+
+## Contents
+
+- [Chapters](#chapters)
+- [Essays](#essays)
+- [How to use it](#how-to-use-it)
+
+## Chapters
 
 | Piece | Subject | Format | Status |
 | --- | --- | --- | --- |
