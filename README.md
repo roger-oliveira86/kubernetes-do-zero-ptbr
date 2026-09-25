@@ -37,11 +37,11 @@ That's why this track starts with the operating system and only then climbs to t
 
 | # | Chapter | What you take away |
 | --- | --- | --- |
-| 01 | [Distros and terminal](./00-linux-for-platform-engineering/01-distros-e-terminal/README.md) | How to inspect an unfamiliar Linux system |
-| 02 | [Processes](./00-linux-for-platform-engineering/02-processos/README.md) | PID, PPID, states and how to investigate a process |
-| 03 | [Networking and troubleshooting](./00-linux-for-platform-engineering/04-redes-e-troubleshooting/README.md) | Routes, DNS, ports, sockets and the real causes of a `connection refused` |
-| 04 | [Users and permissions](./00-linux-for-platform-engineering/03-usuarios-e-permissoes/README.md) | UID/GID, the `x` bit on directories, `umask` and how it maps to `securityContext` |
-| 05 | [Filesystems and inodes](./00-linux-for-platform-engineering/05-sistema-de-arquivos-e-inodes/README.md) | Why a disk can "fill up" with free space left: inodes, `lsof +L1` and `DiskPressure` |
+| 01 | [Distros and terminal](./00-linux-for-platform-engineering/01-distros-and-terminal/README.md) | How to inspect an unfamiliar Linux system |
+| 02 | [Processes](./00-linux-for-platform-engineering/02-processes/README.md) | PID, PPID, states and how to investigate a process |
+| 03 | [Networking and troubleshooting](./00-linux-for-platform-engineering/04-networking-and-troubleshooting/README.md) | Routes, DNS, ports, sockets and the real causes of a `connection refused` |
+| 04 | [Users and permissions](./00-linux-for-platform-engineering/03-users-and-permissions/README.md) | UID/GID, the `x` bit on directories, `umask` and how it maps to `securityContext` |
+| 05 | [Filesystems and inodes](./00-linux-for-platform-engineering/05-filesystems-and-inodes/README.md) | Why a disk can "fill up" with free space left: inodes, `lsof +L1` and `DiskPressure` |
 
 Full track index: [Linux for Platform Engineering](./00-linux-for-platform-engineering/README.md).
 
@@ -50,15 +50,15 @@ Full track index: [Linux for Platform Engineering](./00-linux-for-platform-engin
 | Essay | Topic |
 | --- | --- |
 | [Platform Engineering starts before Kubernetes](./ENSAIOS.md) | Who the platform's customer is, how it fails, and how to measure whether it helps |
-| [Observability isn't a dashboard: it's decision support](./artigos/ensaios/observabilidade-orientada-a-decisao.md) | Metrics, logs and traces as support for deciding the next safe step of a change |
-| [Wave migration with go/rollback criteria](./artigos/ensaios/migracao-em-ondas-observabilidade-para-decidir-com-seguranca.md) | When to advance, pause or roll back a progressive change, and on which signals |
-| [The order of the waves: what each stage needs to teach](./artigos/ensaios/ordem-das-ondas-o-que-cada-etapa-precisa-ensinar.md) | Ordering risky changes by what each stage teaches the next, not by ease |
+| [Observability isn't a dashboard: it's decision support](./articles/essays/observabilidade-orientada-a-decisao.md) | Metrics, logs and traces as support for deciding the next safe step of a change |
+| [Wave migration with go/rollback criteria](./articles/essays/migracao-em-ondas-observabilidade-para-decidir-com-seguranca.md) | When to advance, pause or roll back a progressive change, and on which signals |
+| [The order of the waves: what each stage needs to teach](./articles/essays/ordem-das-ondas-o-que-cada-etapa-precisa-ensinar.md) | Ordering risky changes by what each stage teaches the next, not by ease |
 
 The essays use sanitized examples: no real system, data or incident is identifiable.
 
 ## In progress
 
-The Kubernetes modules (workloads, cluster architecture, networking, storage and troubleshooting) are being written one at a time, always with a reproducible lab. The plan and order live in the [ROADMAP](./ROADMAP.md); the starting point is [First steps](./00-primeiros-passos/README.md).
+The Kubernetes modules (workloads, cluster architecture, networking, storage and troubleshooting) are being written one at a time, always with a reproducible lab. The plan and order live in the [ROADMAP](./ROADMAP.md); the starting point is [First steps](./00-first-steps/README.md).
 
 ## How to study
 

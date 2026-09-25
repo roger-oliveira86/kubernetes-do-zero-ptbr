@@ -36,4 +36,4 @@ Before changing any configuration, answer: which directory am I in, which user w
 
 ## Next step
 
-Move on to [Processes](../02-processos/README.md) and observe how programs appear, live and end on Linux.
+Move on to [Processes](../02-processes/README.md) and observe how programs appear, live and end on Linux.

@@ -12,7 +12,7 @@ Prerequisite: basic terminal (piece #1) and users/permissions (piece #4) from th
 ## Structure of this lab
 
 ```text
-05-sistema-de-arquivos-e-inodes/
+05-filesystems-and-inodes/
 └── README.md   # this file
 ```
 
