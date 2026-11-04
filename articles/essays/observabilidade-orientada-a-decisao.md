@@ -6,6 +6,8 @@ tema: "How metrics, logs and traces help assess change, impact and the next safe
 
 # Observability isn't a dashboard: it's decision support
 
+> Full article on DEV.to: [Observability isn't a dashboard: it's decision support](https://dev.to/rogeroliveira86/observability-isnt-a-dashboard-its-decision-support-3a0k)
+
 > Sanitized essay. Contains no identifiable data, systems or incidents.
 
 ## Thesis
