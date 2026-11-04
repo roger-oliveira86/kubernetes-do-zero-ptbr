@@ -84,4 +84,4 @@ The examples are educational. Confirm behavior, version and permissions in the e
 
 ---
 
-*Linux From Scratch series — [Roger Oliveira](https://www.linkedin.com/in/oliveiraroger/). Repository: [kubernetes-do-zero-ptbr](https://github.com/roger-oliveira86/kubernetes-do-zero-ptbr).*
+*Linux From Scratch series — [Roger Oliveira](https://www.linkedin.com/in/oliveiraroger/). Repository: [kubernetes-do-zero](https://github.com/roger-oliveira86/kubernetes-do-zero).*

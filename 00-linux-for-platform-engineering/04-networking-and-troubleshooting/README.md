@@ -77,4 +77,4 @@ Recommended order for investigating "can't connect", always by evidence, never b
 
 ---
 
-*Linux From Scratch series — [Roger Oliveira](https://www.linkedin.com/in/oliveiraroger/). Repository: [kubernetes-do-zero-ptbr](https://github.com/roger-oliveira86/kubernetes-do-zero-ptbr).*
+*Linux From Scratch series — [Roger Oliveira](https://www.linkedin.com/in/oliveiraroger/). Repository: [kubernetes-do-zero](https://github.com/roger-oliveira86/kubernetes-do-zero).*
