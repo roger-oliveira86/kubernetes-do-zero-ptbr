@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
       - name: Validate inputs
         env:
@@ -42,6 +42,11 @@ jobs:
 
           if [[ -z "$TITULO" || -z "$TEMA" ]]; then
             echo "Title and topic are required."
+            exit 1
+          fi
+
+          if ! python3 -c 'import os,sys; sys.exit(not all(chr(10) not in os.environ[k] and chr(13) not in os.environ[k] for k in ("TITULO", "TEMA")))'; then
+            echo "Title and topic must be single-line values."
             exit 1
           fi
 
@@ -66,9 +71,9 @@ jobs:
 
           {
             printf '%s\n' "---"
-            printf 'title: "%s"\n' "$TITULO"
+            python3 -c 'import json, os; print("title: " + json.dumps(os.environ["TITULO"], ensure_ascii=False))'
             printf '%s\n' "status: rascunho"
-            printf 'tema: "%s"\n' "$TEMA"
+            python3 -c 'import json, os; print("tema: " + json.dumps(os.environ["TEMA"], ensure_ascii=False))'
             printf '%s\n\n' "---"
             printf '# %s\n\n' "$TITULO"
             printf '%s\n\n' "> Draft created by workflow. Review technically, sanitize examples, and validate before publishing."
