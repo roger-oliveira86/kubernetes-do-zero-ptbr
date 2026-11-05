@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
       - name: Validate inputs
         env:
@@ -42,6 +42,291 @@ jobs:
 
           if [[ -z "$TITULO" || -z "$TEMA" ]]; then
             echo "Title and topic are required."
+            exit 1
+          fi
+
+          if [[ "$TITULO" == *
+
+      - name: Create branch and Markdown file
+        env:
+          SLUG: ${{ inputs.slug }}
+          TITULO: ${{ inputs.titulo }}
+          TEMA: ${{ inputs.tema }}
+          DATA: ${{ github.run_id }}
+        run: |
+          BRANCH="rascunho/${SLUG}-${DATA}"
+          ARQUIVO="articles/drafts/${SLUG}.md"
+
+          git checkout -b "$BRANCH"
+
+          if [[ -e "$ARQUIVO" ]]; then
+            echo "A draft with this slug already exists: $ARQUIVO"
+            exit 1
+          fi
+
+          mkdir -p articles/drafts
+
+          {
+            printf '%s\n' "---"
+            python3 -c 'import json, os; print("title: " + json.dumps(os.environ["TITULO"], ensure_ascii=False))'
+            printf '%s\n' "status: rascunho"
+            python3 -c 'import json, os; print("tema: " + json.dumps(os.environ["TEMA"], ensure_ascii=False))'
+            printf '%s\n\n' "---"
+            printf '# %s\n\n' "$TITULO"
+            printf '%s\n\n' "> Draft created by workflow. Review technically, sanitize examples, and validate before publishing."
+            printf '%s\n\n' "## Thesis"
+            printf '%s\n\n' "What's the main idea this text argues for?"
+            printf '%s\n\n' "## Context"
+            printf '%s\n\n' "What platform, reliability, or operations problem makes this discussion relevant?"
+            printf '%s\n\n' "## Decision or trade-off"
+            printf '%s\n\n' "What decision needs to be made? What risks, alternatives, and signals support this choice?"
+            printf '%s\n\n' "## Evidence"
+            printf '%s\n\n' "Include only verifiable facts and sanitized examples."
+            printf '%s\n\n' "## Next safe step"
+            printf '%s\n\n' "What practical action can the reader take without adding unnecessary risk?"
+          } > "$ARQUIVO"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$ARQUIVO"
+          git commit -m "docs: cria rascunho ${SLUG}"
+          git push origin "HEAD:$BRANCH"
+
+          echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
+          echo "ARQUIVO=$ARQUIVO" >> "$GITHUB_ENV"
+
+      - name: Open Pull Request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITULO: ${{ inputs.titulo }}
+          TEMA: ${{ inputs.tema }}
+        run: |
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "docs: draft — $TITULO" \
+            --body "## Editorial draft
+
+          **Topic:** $TEMA
+
+          This PR was created by the workflow. Don't merge while the file is still in \`articles/drafts/\`; first, promote the approved content to \`articles/essays/\` per the editorial index.
+
+          - [ ] Technical review
+          - [ ] Example sanitization
+          - [ ] Editorial review
+          - [ ] Explicit publication decision"
+\n'* || "$TITULO" == *
+
+      - name: Create branch and Markdown file
+        env:
+          SLUG: ${{ inputs.slug }}
+          TITULO: ${{ inputs.titulo }}
+          TEMA: ${{ inputs.tema }}
+          DATA: ${{ github.run_id }}
+        run: |
+          BRANCH="rascunho/${SLUG}-${DATA}"
+          ARQUIVO="articles/drafts/${SLUG}.md"
+
+          git checkout -b "$BRANCH"
+
+          if [[ -e "$ARQUIVO" ]]; then
+            echo "A draft with this slug already exists: $ARQUIVO"
+            exit 1
+          fi
+
+          mkdir -p articles/drafts
+
+          {
+            printf '%s\n' "---"
+            printf 'title: "%s"\n' "$TITULO"
+            printf '%s\n' "status: rascunho"
+            printf 'tema: "%s"\n' "$TEMA"
+            printf '%s\n\n' "---"
+            printf '# %s\n\n' "$TITULO"
+            printf '%s\n\n' "> Draft created by workflow. Review technically, sanitize examples, and validate before publishing."
+            printf '%s\n\n' "## Thesis"
+            printf '%s\n\n' "What's the main idea this text argues for?"
+            printf '%s\n\n' "## Context"
+            printf '%s\n\n' "What platform, reliability, or operations problem makes this discussion relevant?"
+            printf '%s\n\n' "## Decision or trade-off"
+            printf '%s\n\n' "What decision needs to be made? What risks, alternatives, and signals support this choice?"
+            printf '%s\n\n' "## Evidence"
+            printf '%s\n\n' "Include only verifiable facts and sanitized examples."
+            printf '%s\n\n' "## Next safe step"
+            printf '%s\n\n' "What practical action can the reader take without adding unnecessary risk?"
+          } > "$ARQUIVO"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$ARQUIVO"
+          git commit -m "docs: cria rascunho ${SLUG}"
+          git push origin "HEAD:$BRANCH"
+
+          echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
+          echo "ARQUIVO=$ARQUIVO" >> "$GITHUB_ENV"
+
+      - name: Open Pull Request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITULO: ${{ inputs.titulo }}
+          TEMA: ${{ inputs.tema }}
+        run: |
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "docs: draft — $TITULO" \
+            --body "## Editorial draft
+
+          **Topic:** $TEMA
+
+          This PR was created by the workflow. Don't merge while the file is still in \`articles/drafts/\`; first, promote the approved content to \`articles/essays/\` per the editorial index.
+
+          - [ ] Technical review
+          - [ ] Example sanitization
+          - [ ] Editorial review
+          - [ ] Explicit publication decision"
+\r'* || "$TEMA" == *
+
+      - name: Create branch and Markdown file
+        env:
+          SLUG: ${{ inputs.slug }}
+          TITULO: ${{ inputs.titulo }}
+          TEMA: ${{ inputs.tema }}
+          DATA: ${{ github.run_id }}
+        run: |
+          BRANCH="rascunho/${SLUG}-${DATA}"
+          ARQUIVO="articles/drafts/${SLUG}.md"
+
+          git checkout -b "$BRANCH"
+
+          if [[ -e "$ARQUIVO" ]]; then
+            echo "A draft with this slug already exists: $ARQUIVO"
+            exit 1
+          fi
+
+          mkdir -p articles/drafts
+
+          {
+            printf '%s\n' "---"
+            printf 'title: "%s"\n' "$TITULO"
+            printf '%s\n' "status: rascunho"
+            printf 'tema: "%s"\n' "$TEMA"
+            printf '%s\n\n' "---"
+            printf '# %s\n\n' "$TITULO"
+            printf '%s\n\n' "> Draft created by workflow. Review technically, sanitize examples, and validate before publishing."
+            printf '%s\n\n' "## Thesis"
+            printf '%s\n\n' "What's the main idea this text argues for?"
+            printf '%s\n\n' "## Context"
+            printf '%s\n\n' "What platform, reliability, or operations problem makes this discussion relevant?"
+            printf '%s\n\n' "## Decision or trade-off"
+            printf '%s\n\n' "What decision needs to be made? What risks, alternatives, and signals support this choice?"
+            printf '%s\n\n' "## Evidence"
+            printf '%s\n\n' "Include only verifiable facts and sanitized examples."
+            printf '%s\n\n' "## Next safe step"
+            printf '%s\n\n' "What practical action can the reader take without adding unnecessary risk?"
+          } > "$ARQUIVO"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$ARQUIVO"
+          git commit -m "docs: cria rascunho ${SLUG}"
+          git push origin "HEAD:$BRANCH"
+
+          echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
+          echo "ARQUIVO=$ARQUIVO" >> "$GITHUB_ENV"
+
+      - name: Open Pull Request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITULO: ${{ inputs.titulo }}
+          TEMA: ${{ inputs.tema }}
+        run: |
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "docs: draft — $TITULO" \
+            --body "## Editorial draft
+
+          **Topic:** $TEMA
+
+          This PR was created by the workflow. Don't merge while the file is still in \`articles/drafts/\`; first, promote the approved content to \`articles/essays/\` per the editorial index.
+
+          - [ ] Technical review
+          - [ ] Example sanitization
+          - [ ] Editorial review
+          - [ ] Explicit publication decision"
+\n'* || "$TEMA" == *
+
+      - name: Create branch and Markdown file
+        env:
+          SLUG: ${{ inputs.slug }}
+          TITULO: ${{ inputs.titulo }}
+          TEMA: ${{ inputs.tema }}
+          DATA: ${{ github.run_id }}
+        run: |
+          BRANCH="rascunho/${SLUG}-${DATA}"
+          ARQUIVO="articles/drafts/${SLUG}.md"
+
+          git checkout -b "$BRANCH"
+
+          if [[ -e "$ARQUIVO" ]]; then
+            echo "A draft with this slug already exists: $ARQUIVO"
+            exit 1
+          fi
+
+          mkdir -p articles/drafts
+
+          {
+            printf '%s\n' "---"
+            printf 'title: "%s"\n' "$TITULO"
+            printf '%s\n' "status: rascunho"
+            printf 'tema: "%s"\n' "$TEMA"
+            printf '%s\n\n' "---"
+            printf '# %s\n\n' "$TITULO"
+            printf '%s\n\n' "> Draft created by workflow. Review technically, sanitize examples, and validate before publishing."
+            printf '%s\n\n' "## Thesis"
+            printf '%s\n\n' "What's the main idea this text argues for?"
+            printf '%s\n\n' "## Context"
+            printf '%s\n\n' "What platform, reliability, or operations problem makes this discussion relevant?"
+            printf '%s\n\n' "## Decision or trade-off"
+            printf '%s\n\n' "What decision needs to be made? What risks, alternatives, and signals support this choice?"
+            printf '%s\n\n' "## Evidence"
+            printf '%s\n\n' "Include only verifiable facts and sanitized examples."
+            printf '%s\n\n' "## Next safe step"
+            printf '%s\n\n' "What practical action can the reader take without adding unnecessary risk?"
+          } > "$ARQUIVO"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$ARQUIVO"
+          git commit -m "docs: cria rascunho ${SLUG}"
+          git push origin "HEAD:$BRANCH"
+
+          echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
+          echo "ARQUIVO=$ARQUIVO" >> "$GITHUB_ENV"
+
+      - name: Open Pull Request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITULO: ${{ inputs.titulo }}
+          TEMA: ${{ inputs.tema }}
+        run: |
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "docs: draft — $TITULO" \
+            --body "## Editorial draft
+
+          **Topic:** $TEMA
+
+          This PR was created by the workflow. Don't merge while the file is still in \`articles/drafts/\`; first, promote the approved content to \`articles/essays/\` per the editorial index.
+
+          - [ ] Technical review
+          - [ ] Example sanitization
+          - [ ] Editorial review
+          - [ ] Explicit publication decision"
+\r'* ]]; then
+            echo "Title and topic must be single-line values."
             exit 1
           fi
 
