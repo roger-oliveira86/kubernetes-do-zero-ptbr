@@ -1,0 +1,39 @@
+name: Validate Kubernetes manifests
+
+on:
+  pull_request:
+    paths:
+      - '**/*.yaml'
+      - '**/*.yml'
+      - '.github/workflows/validate-manifests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Kubernetes YAML (v1.35.0)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+
+      - name: Validate Kubernetes manifests with kubeconform
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -d '' files < <(
+            find . -type f \( -name '*.yaml' -o -name '*.yml' \) \
+              ! -path './.github/*' -print0 | sort -z
+          )
+          if (( ${#files[@]} == 0 )); then
+            echo 'No Kubernetes manifests found.'
+            exit 1
+          fi
+          printf 'Validating %s YAML files\n' "${#files[@]}"
+          docker run --rm \
+            -v "$PWD:/workspace:ro" -w /workspace \
+            ghcr.io/yannh/kubeconform@sha256:faffaf43f95aa6425306e1ab8d6fcad72acb9049158f38e574c085ea1ec0f64e \
+            -strict -summary -kubernetes-version 1.35.0 "${files[@]}"
